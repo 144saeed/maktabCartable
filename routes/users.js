@@ -10,8 +10,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect : '/dashboard', // redirect to the secure profile section
-  failureRedirect : '/layout'
+  successRedirect : '/roll', // redirect to the secure profile section
+  failureRedirect : '/'
 }),
 function(req, res) {
   console.log("here");
