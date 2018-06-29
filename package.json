@@ -1,0 +1,21 @@
+{
+  "name": "ECartable",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "*",
+    "express": "~4.16.0",
+    "express-session": "^1.15.6",
+    "http-errors": "*",
+    "morgan": "*",
+    "mysql": "^2.15.0",
+    "passport": "*",
+    "passport-local": "^1.0.0"
+  }
+}
