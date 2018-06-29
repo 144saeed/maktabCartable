@@ -6,7 +6,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.sendFile('login.html', { title: 'Express' });
+
+  
+  res.sendFile(global.RootDirectory+'/views/login.html', { title: 'Express' });
 });
 router.get('/dashboard', function(req, res, next) {
   res.send('dashboard', { title: 'Express' });
