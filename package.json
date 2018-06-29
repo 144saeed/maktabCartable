@@ -12,6 +12,7 @@
     "ejs": "*",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
+    "fs": "0.0.1-security",
     "http-errors": "*",
     "morgan": "*",
     "mysql": "^2.15.0",
