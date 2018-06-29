@@ -14,7 +14,7 @@ router.post('/login', passport.authenticate('local-login', {
   failureRedirect : '/'
 }),
 function(req, res) {
-  console.log("here");
+  console.log("LoginFailed");
 });
 
 

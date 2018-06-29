@@ -4,7 +4,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var expressSession = require('express-session');
+var session = require('express-session');
 var logger = require('morgan');
  global.RootDirectory=__dirname;
 //initiat Routers
@@ -25,6 +25,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/test',express.static(path.join(__dirname, 'views')));
 
+app.use(session({
+	secret: 'Maktab13',
+	resave: true,
+  saveUninitialized: true
+ } )); 
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -25,7 +25,7 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        connection.query("SELECT * FROM users WHERE id = ? ",[id], function(err, rows){
+        connection.query("SELECT * FROM user WHERE id = ? ",[id], function(err, rows){
             done(err, rows[0]);
         });
     });
@@ -40,7 +40,7 @@ module.exports = function(passport) {
         'local-signup',
         new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
-            usernameField : 'email',
+            usernameField : 'nationalId',
             passwordField : 'password',
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
