@@ -2,16 +2,16 @@
     "name": "portal-authentication",
     "main": "server.js",
     "dependencies": {
-        "express": "",
-        "body-parser": "",
-        "cookie-parser": "",
-        "passport": "",
-        "mysql": "",
-        "passport-local": "",
-        "morgan": "",
-        "nodemon": "",
         "bcrypt": "",
+        "body-parser": "",
         "connect-flash": "",
-        "express-session": ""
+        "cookie-parser": "",
+        "express": "",
+        "express-session": "",
+        "morgan": "",
+        "mysql": "",
+        "nodemon": "",
+        "passport": "",
+        "passport-local": ""
     }
 }
