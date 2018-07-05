@@ -1,0 +1,47 @@
+#content{
+    width: 600px;
+    height:300px;
+    margin: 50px auto;
+    box-shadow: 0 0 5px 2px #ccc;
+    padding: 5px;
+}
+
+#info ,#roll {
+    width: 90%;
+    height:40%;
+    border: 1px solid #eee;
+    margin: 5px auto;
+    padding: 5px;
+}
+
+#info div {
+    float: left;
+}
+
+#info .img{
+    width: 80px;
+    height: 80px;
+    margin: 5px;
+    background: url("../Images/icon/user_1.png") #eee no-repeat center;
+}
+
+
+#roll {
+    height: 55%;
+    border-color: transparent;
+}
+
+#roll .subroll {
+    width: 50%;
+    height: 50%;
+    float: left;
+    border: 1px solid #ccc;
+
+}
+
+
+h5 {
+    text-align: center;
+    padding: 0;
+    margin: 5px;
+}
