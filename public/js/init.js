@@ -17,14 +17,22 @@ $(document).ready(function () {
                 "لطفا برای ثیت نام رایانامه خود را وارد کنید" +
                 "</span>" +
                 "</div>" +
-                " <button class='waves-effect waves-light btn mar-t-3' type='submit' name='action' id='btn-ckeckEmail'> ثبت نام</button>" +
+                " <button type='button' class='waves-effect waves-light btn mar-t-2'   id='btn-ckeckEmail' > ثبت نام</button>" +
                 "</div>" +
                 "</div>"
             )
+            $("#logInfo").css({ "display": "block" })
+            $("#btn-ckeckEmail").click(function () {
+                alert("1")
+                $.post("/checkRegistrationEmail", { 'email': $('#email').val() }, function (data) {
 
-            $("#logInfo").css({"display": "block"})
+                    alert(data['emailexist'])
+                    alert(data['verificationEmailSEnd'])
+                })
+            });
         })
     })
+    
 
     $("#logIn").on("click", function () {
         $("#logBox > .container").remove();
@@ -34,30 +42,34 @@ $(document).ready(function () {
         $("#logBox").css({
             "right": "100px"
         }).delay(800).fadeIn("slow", function () {
-            $("#logBox").append("<div class='container'>" 
-            +"<h5 class='center-align green-text text-darken-4'>ورود</h5>"
-                +"<div class='row mar-t-2'>"
-                   +"<div class='input-field col s12'>"
-                        +"<input id='username' type='text' class='validate' name=''>"
-                        +"<label for='username'>نام کاربری</label>"
-                        +"<span class='helper-text' data-error='wrong' data-success='right'>نام کاربری همان کد ملی می باشد</span>"
-                    +"</div>"
-                    +"<div class='input-field col s12'>"
-                        +"<input id='password' type='password' class='validate'>"
-                        +"<label for='password'>گذرواژه</label>"
-                    +"</div>"
-                    +"<button class='waves-effect waves-light btn mar-t-2' type='submit' name='action'> ورود"
-                    +"</button>"
+            $("#logBox").append("<div class='container'>"
+            + "<h5 class='center-align green-text text-darken-4'>ورود</h5>"
+                + "<div class='row mar-t-2'>"
+                   + "<div class='input-field col s12'>"
+                        + "<input id='username' type='text' class='validate' name=''>"
+                        + "<label for='username'>نام کاربری</label>"
+                        + "<span class='helper-text' data-error='wrong' data-success='right'>نام کاربری همان کد ملی می باشد</span>"
+                    + "</div>"
+                    + "<div class='input-field col s12'>"
+                        + "<input id='password' type='password' class='validate'>"
+                        + "<label for='password'>گذرواژه</label>"
+                    + "</div>"
+                    + "<button class='waves-effect waves-light btn mar-t-2' type='submit' name='action'> ورود"
+                    + "</button>"
             )
-            $("#signInfo").css({"display": "block"})
+            $("#signInfo").css({ "display": "block" })
         })
-      })
+    })
 
     $("#btn-ckeckEmail").click(function () {
+        console.log('hi')
         $.post("/checkRegistrationEmail", { 'email': $('#email').val() }, function (data) {
             alert(data['emailexist'])
             alert(data['verificationEmailSEnd'])
         })
-    })
+    });
 
 })
+
+
+
