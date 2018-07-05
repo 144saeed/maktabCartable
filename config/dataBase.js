@@ -48,6 +48,38 @@ module.exports = {
             next(err, res, fields);
         });
     },
+    checkForRegisterationEmail(email, next) {
+        let sqlsttmnt = "select isMainEmail, isVerified" +
+            " from emailInfo" +
+            " where email = ?;";
+        connection.query(sqlsttmnt, email, (err, results, fields) => {
+            if (results = undefined) {
+                next({
+                    flag: false,
+                    status: 0,
+                    message: "no such an email"
+                })
+            } else if (!results.isMainEmail) {
+                next({
+                    flag: false,
+                    status: 1,
+                    message: "this email address is not a registeration email"
+                })
+            } else if (results.isVerified) {
+                next({
+                    flag: false,
+                    status: 2,
+                    message: "this email address is verified already"
+                })
+            } else {
+                next({
+                    flag: true,
+                    status: 3,
+                    message: "this email should be verified"
+                })
+            }
+        });
+    },
     alterMyUserInformation() {}
 }
 
