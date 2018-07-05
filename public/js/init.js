@@ -23,7 +23,6 @@ $(document).ready(function () {
             )
             $("#logInfo").css({ "display": "block" })
             $("#btn-ckeckEmail").click(function () {
-                alert("1")
                 $.post("/checkRegistrationEmail", { 'email': $('#email').val() }, function (data) {
 
                     alert(data['emailexist'])
