@@ -17,7 +17,7 @@ $(document).ready(function () {
                 "لطفا برای ثیت نام رایانامه خود را وارد کنید" +
                 "</span>" +
                 "</div>" +
-                " <button class='waves-effect waves-light btn mar-t-3' type='submit' name='action'> ثبت نام</button>" +
+                " <button class='waves-effect waves-light btn mar-t-3' type='submit' name='action' id='btn-ckeckEmail'> ثبت نام</button>" +
                 "</div>" +
                 "</div>"
             )
@@ -53,6 +53,11 @@ $(document).ready(function () {
         })
       })
 
-
+    $("#btn-ckeckEmail").click(function () {
+        $.post("/checkRegistrationEmail", { 'email': $('#email').val() }, function (data) {
+            alert(data['emailexist'])
+            alert(data['verificationEmailSEnd'])
+        })
+    })
 
 })
