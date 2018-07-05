@@ -53,7 +53,8 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/userAccounts', isLoggedIn, function (req, res) {
         database.userPersonalDataByUserId(req.user, (err, results, fields) => {
-            res.send(results);
+            res.sendFile(res.sendFile(path.join(__dirname, '../views/roll.html'),results));
+            //With this route u will directed to rolls page to choose a roll wich u have.
         })
     });
 
