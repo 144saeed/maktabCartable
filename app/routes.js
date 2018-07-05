@@ -18,6 +18,14 @@ module.exports = function (app, passport) {
             })
         };
     });
+    //First Step Registration
+    app.post('/checkRegistrationEmail', function (req, res) {
+        let result={
+            'emailExist':'true',
+            'verificationEmailSent':'true'
+        };
+        res.send(result);
+    });
 
     // process the login form
     app.post('/',
@@ -51,9 +59,9 @@ module.exports = function (app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/userRolls',isLoggedIn,function (req, res) {
+    app.get('/userRolls', isLoggedIn, function (req, res) {
         database.userPersonalDataByUserId(req.user, (err, results, fields) => {
-            res.send(results);           
+            res.send(results);
         })
     });
     app.get('/userAccounts', isLoggedIn, function (req, res) {
