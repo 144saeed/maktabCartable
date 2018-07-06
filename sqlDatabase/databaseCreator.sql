@@ -575,7 +575,7 @@ COMMIT;
 START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'saeedoveisi@a.com', DEFAULT, DEFAULT);
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'saeed@b.com', DEFAULT, DEFAULT);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'saeed@b.com', true, DEFAULT);
 
 COMMIT;
 

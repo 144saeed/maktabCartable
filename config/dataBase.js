@@ -53,7 +53,7 @@ module.exports = {
             " from emailInfo" +
             " where email = ?;";
         connection.query(sqlsttmnt, email, (err, results, fields) => {
-            if (results = undefined) {
+            if (results == undefined) {
                 next({
                     flag: false,
                     status: 0,
@@ -80,16 +80,34 @@ module.exports = {
             }
         });
     },
-    alterMyUserInformation(id, dataToReplace, next) {
+    verifyEmail(id, next) {
+        let sqlsttmnt = "update emailInfo" +
+            " set isVerified=true" +
+            " where !isMainEmail" +
+            " and !isVerified" +
+            " and user_id=?;";
+        connection.query(sqlsttmnt, id, (err, results, fields) => {
+            next(err, results, fields);
+        })
+    },
+    alterUserInformation(id, dataToReplace, next) {
         if (dataToReplace.type == "personal") {
-            alterMyPersonalInformation(id, dataToReplace.value, next);
+            alterPersonalInformation(id, dataToReplace.value, next);
         } else if (dataToReplace.type == "professionalResume") {
-            alterMyProfessionalResume(id, dataToReplace.value, next);
+            alterProfessionalResume(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "educationalResume") {
+            alterEducatinalResume(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "addressInformation") {
+            alterAddressInformation(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "callInformation") {
+            alterCallInformation(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "emailInformation") {
+            alterEmailInformation(id, dataToReplace.value, next);
         }
     }
 }
 
-let alterMyPersonalInformation = function (id, data, next) {
+let alterPersonalInformation = function (id, data, next) {
     let sqlsttmnt = "update user" +
         " set firstName=?" +
         ",lastName=?" +
@@ -104,7 +122,7 @@ let alterMyPersonalInformation = function (id, data, next) {
     })
 }
 
-let alterMyProfessionalResume = function (id, data, next) {
+let alterProfessionalResume = function (id, data, next) {
     let sqlsttmnt = "update proResume" +
         " set jobTitle=?" +
         ",institute=?" +
@@ -122,6 +140,46 @@ let alterMyProfessionalResume = function (id, data, next) {
     })
 }
 
-let alterMyEducatinalResume = function(id,data,next){
-    
+let alterEducatinalResume = function (id, data, next) {
+    let sqlsttmnt = "update eduResume" +
+        " set level=?" +
+        ",institute=?" +
+        ",grade=?" +
+        ",startDate=?" +
+        ",endDate=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.level, data.institute,
+        data.grade, data.startDate, data.endDate, id
+    ], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterAddressInformation = function (id, data, next) {
+    let sqlsttmnt = "update addressInfo" +
+        " set title=?" +
+        ",address=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.title, data.address, id], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterCallInformation = function (id, data, next) {
+    let sqlsttmnt = "update callInfo" +
+        " set title=?" +
+        ",number=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.title, data.number, id], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterEmailInformation = function (id, data, next) {
+    let sqlsttmnt = "update emailInfo" +
+        " set email=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.email, id], (err, results, fields) => {
+        next(err, results, fields);
+    })
 }
