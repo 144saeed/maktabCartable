@@ -101,8 +101,12 @@ module.exports = function (app, passport) {
                 'profilesData': '',
                 'profilesPicture': ''
             };
+            if (results.personalInformation[0].personalPic.toString() == "dir")
+                frontEndResult.profilesPicture = "Images/icon/user_1.png";
+            else
+                frontEndResult.profilesPicture = results.personalInformation[0].personalPic;
             frontEndResult.profilesData = results.profilesData;
-            frontEndResult.profilesPicture = results.personalInformation[0].personalPic
+
             res.send(frontEndResult);
         })
     });
