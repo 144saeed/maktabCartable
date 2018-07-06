@@ -26,9 +26,9 @@ $(document).ready(function () {
             $("#btn-ckeckEmail").click(function () {
                 $.post("/checkRegistrationEmail", { 'email': $('#email').val() }, function (data) {
 
-                    alert(data['emailExist'])
-                    alert(data['verificationEmailSent'])
-                    alert(data['message'])
+                   //alert(data['emailExist'])
+                   //alert(data['verificationEmailSent'])
+                   // alert(data['message'])
                     $("#msg-server").html(data['message'])
                     
                 })
