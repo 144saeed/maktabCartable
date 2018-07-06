@@ -1,0 +1,61 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5 {
+    padding: 0;
+    margin: 0;
+    font-family: iransans;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+header {
+    height: 60px;
+    position: fixed;
+    top: 0;
+    right:0;
+
+}
+
+div{
+    height: 100%;
+}
+
+header .icon{
+    width: 60px;
+    cursor: pointer;
+}
+header .icon i{
+line-height: 60px;
+}
+
+header .info .img {
+    padding: 10px 10px;
+}
+
+header .info img {
+    width: 40px ;
+    height: 40px;
+}
+
+header .info .name {
+    border: 1px solid red;
+}
+
+header .info h6 {
+    font-size: 12px;
+    padding:10px 10px;
+}
+
+.rightMenu{
+    position: fixed;
+    width: 200px;
+    top: 60px;
+    right: 0;
+    bottom: 0;
+}
