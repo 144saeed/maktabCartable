@@ -80,9 +80,48 @@ module.exports = {
             }
         });
     },
-    alterMyUserInformation() {}
+    alterMyUserInformation(id, dataToReplace, next) {
+        if (dataToReplace.type == "personal") {
+            alterMyPersonalInformation(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "professionalResume") {
+            alterMyProfessionalResume(id, dataToReplace.value, next);
+        }
+    }
 }
 
-let alterMyPersonalInformation = function (id, data) {
-    let sqlsttmnt = 'update user'
+let alterMyPersonalInformation = function (id, data, next) {
+    let sqlsttmnt = "update user" +
+        " set firstName=?" +
+        ",lastName=?" +
+        ",nationalId=?" +
+        ",fathersName=?" +
+        ",personalPic=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.firsName, data.lastName,
+        data.nationalId, data.fathersName, data.personalPic, id
+    ], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterMyProfessionalResume = function (id, data, next) {
+    let sqlsttmnt = "update proResume" +
+        " set jobTitle=?" +
+        ",institute=?" +
+        ",instituteAddress=?" +
+        ",phoneNumber=?" +
+        ",startDate=?" +
+        ",endDate=?" +
+        ",endingReason=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.jobTitle, data.institute,
+        data.instituteAddress, data.phoneNumber, data.startDate,
+        data.endDate, data.endingReason, id
+    ], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterMyEducatinalResume = function(id,data,next){
+    
 }
