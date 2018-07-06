@@ -14,9 +14,6 @@ $(document).ready(function () {
     }
    
     getJsonData("/userRolls", function (data) {
-        console.log(data.profilesData);
-        console.log(data.profilesData.length);
-        console.log(data.profilesPicture);
         $("#profile").append("<div id='profileImg' class='white z-depth-1'>"
             +"<img src='" + data.profilesPicture + "' alt='profilesPicture' class='blue-grey lighten-3'>"
         +"</div>")
