@@ -574,8 +574,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'saeedoveisi@a.com', DEFAULT, DEFAULT);
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'saeed@b.com', DEFAULT, DEFAULT);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test1@test.test', DEFAULT, DEFAULT);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test2@test.test', true, DEFAULT);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test3@test.test', true, true);
 
 COMMIT;
 
