@@ -551,7 +551,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (1, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'saeed', 'oveisi', '12345', 'ss', 'dir');
+INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (1, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'saeed', 'oveisi', '12345', 'ss', 'testProPic.jpg');
 INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (2, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'mohammadreza', 'peykanro', '123456', 'mm', 'dir2');
 INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (3, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'alireza', 'riahi', '1234567', 'aa', 'dir3');
 
