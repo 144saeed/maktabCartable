@@ -7,8 +7,7 @@ module.exports = function (app, passport) {
     app.get('/', function (req, res) {
         if (req.isAuthenticated()) {
             res.redirect('/userAccounts')
-        }
-        else {
+        } else {
             res.sendFile(path.join(__dirname, '../views/login.html'), {
                 message: req.flash('loginMessage')
             })
@@ -93,7 +92,7 @@ module.exports = function (app, passport) {
             if (results.personalInformation[0].personalPic.toString() == "dir")
                 frontEndResult.profilesPicture = "Images/01/images.jpg";
             else
-                frontEndResult.profilesPicture = results.personalInformation[0].personalPic;
+                frontEndResult.profilesPicture = path.join(__dirname, '../attachments/' + results.personalInformation[0].personalPic);
             frontEndResult.profilesData = results.profilesData;
 
             res.send(frontEndResult);
@@ -117,8 +116,9 @@ module.exports = function (app, passport) {
     //======================================
     //Dahsboard ====================
     //======================================
-    app.get('/dashboard/personal', (req, res) => {
-
+    app.post('/dashboard', (req, res) => {
+        console.log("hi");
+        res.sendFile(path.join(__dirname, '../views/dashboard.html'));
     })
 };
 
