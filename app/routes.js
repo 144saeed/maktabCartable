@@ -20,11 +20,43 @@ module.exports = function (app, passport) {
     });
     //First Step Registration
     app.post('/checkRegistrationEmail', function (req, res) {
-        let result={
-            'emailExist':'true',
-            'verificationEmailSent':'true'
-        };
-        res.send(result);
+        database.checkForRegisterationEmail(req.body.email, function (output) {
+            let result = {
+                'emailExist': '',
+                'verificationEmailSent': '',
+                'message': ''
+            };
+            console.log(output.message);
+            switch (output.status) {
+                case 3:
+                    result.emailExist = output.flag;
+                    result.verificationEmailSent = EmailSender(req.email);
+                    if(result.verificationEmailSent)
+                        result.message = 'لینک فعال سازی برای شما ارسال شد';
+                        else
+                        result.message='مشکلی در ارسال پیش آمده لطفا دوباره تلاش کنید.';
+
+                    break;
+                case 2:
+                    result.emailExist = output.flag;
+                    result.verificationEmailSent = 'false';
+                    result.message = 'این ایمیل در سامانه ثبت و تایید شده است'
+                    break;
+                case 1:
+                    result.emailExist = output.flag;
+                    result.verificationEmailSent = 'false';
+                    result.message = 'این آدرس یافت نشد';
+                    break;
+                case 0:
+                    result.emailExist = output.flag;
+                    result.verificationEmailSent = 'false';
+                    result.message = 'این آدرس یافت نشد'
+                    break;
+            }
+
+            res.send(result);
+        })
+
     });
 
     // process the login form
@@ -97,4 +129,46 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+//Email Sender
+function EmailSender(receiverEmail) {
+    var nodemailer = require('nodemailer');
+
+    nodemailer.createTestAccount((err, account) => {
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: 'mail.paykanro.ir',
+            port: 587,
+            secure: false,
+            requireTLS: true, //Force TLS
+            tls: {
+                rejectUnauthorized: false
+            }, // true for 465, false for other ports
+            auth: {
+                user: 'maktab@paykanro.ir', // generated ethereal user
+                pass: 'maktab+13' // generated ethereal password
+            }
+        });
+
+        // setup email data with unicode symbols
+        let mailOptions = {
+            from: 'maktab@paykanro.ir', // sender address
+            to: receiverEmail, // list of receivers
+            subject: 'سامانه ثبت نام', // Subject line
+            text: 'برای تکمیل ثبت نام خود به آدرس زیر مزاجعه کنید', // plain text body
+            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' // html body
+        };
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                return 0;
+            }
+            console.log("Email Sent");
+            return 1;
+
+        });
+    });
 }

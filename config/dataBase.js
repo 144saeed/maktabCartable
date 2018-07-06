@@ -50,16 +50,16 @@ module.exports = {
     },
     checkForRegisterationEmail(email, next) {
         let sqlsttmnt = "select isMainEmail, isVerified" +
-            " from emailInfo" +
+            " from emailinfo" +
             " where email = ?;";
         connection.query(sqlsttmnt, email, (err, results, fields) => {
-            if (results = undefined) {
+            if (results == undefined) {
                 next({
                     flag: false,
                     status: 0,
                     message: "no such an email"
                 })
-            } else if (!results.isMainEmail) {
+            } else if (results.isMainEmail!=1) {
                 next({
                     flag: false,
                     status: 1,
