@@ -463,9 +463,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ecartable`.`rolls_has_procedures` ;
 
 CREATE TABLE IF NOT EXISTS `ecartable`.`rolls_has_procedures` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `rolls_id` INT NOT NULL,
   `procedures_id` INT NOT NULL,
-  PRIMARY KEY (`rolls_id`, `procedures_id`),
+  PRIMARY KEY (`id`, `rolls_id`, `procedures_id`),
   INDEX `fk_rolls_has_procedures_procedures1_idx` (`procedures_id` ASC),
   INDEX `fk_rolls_has_procedures_rolls1_idx` (`rolls_id` ASC),
   CONSTRAINT `fk_rolls_has_procedures_rolls1`
@@ -551,7 +552,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (1, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'saeed', 'oveisi', '12345', 'ss', 'testProPic.jpg');
+INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (1, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'saeed', 'oveisi', '12345', 'ss', '\"testProPic.jpg\"');
 INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (2, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'mohammadreza', 'peykanro', '123456', 'mm', 'dir2');
 INSERT INTO `ecartable`.`user` (`id`, `password`, `firstName`, `lastName`, `nationalId`, `fathersName`, `personalPic`) VALUES (3, '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'alireza', 'riahi', '1234567', 'aa', 'dir3');
 
@@ -574,9 +575,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test1@test.test', DEFAULT, DEFAULT);
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test2@test.test', true, DEFAULT);
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test3@test.test', true, true);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test1@test.tes', DEFAULT, DEFAULT);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test2@test.tes', 1, DEFAULT);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'test3@test.tes', 1, 1);
 
 COMMIT;
 
@@ -603,6 +604,18 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `ecartable`.`procedures`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `ecartable`;
+INSERT INTO `ecartable`.`procedures` (`id`, `title`) VALUES (1, 'addStudent');
+INSERT INTO `ecartable`.`procedures` (`id`, `title`) VALUES (2, 'editSelfInformation');
+INSERT INTO `ecartable`.`procedures` (`id`, `title`) VALUES (3, 'editStudentInformation');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `ecartable`.`term`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -618,10 +631,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (0, 'Admin', 'maktab administration');
 INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (1, 'student', 'student');
 INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (2, 'teacher', 'teacher');
 INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (3, 'supervisor', 'supervisor');
+INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (4, 'Admin', 'system adminitrator');
 
 COMMIT;
 
@@ -635,6 +648,22 @@ INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALU
 INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 2, 1, 1);
 INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 3, 1, 3);
 INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 1, 2, 3);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `ecartable`.`rolls_has_procedures`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `ecartable`;
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (DEFAULT, 4, 1);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (DEFAULT, 4, 2);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (DEFAULT, 4, 3);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (DEFAULT, 1, 2);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (DEFAULT, 2, 2);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (DEFAULT, 3, 1);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (DEFAULT, 3, 2);
 
 COMMIT;
 
