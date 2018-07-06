@@ -97,7 +97,13 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/userRolls', isLoggedIn, function (req, res) {
         database.userPersonalDataByUserId(req.user, (err, results, fields) => {
-            res.send(results.profilesData);
+            let frontEndResult = {
+                'profilesData': '',
+                'profilesPicture': ''
+            };
+            frontEndResult.profilesData = results.profilesData;
+            frontEndResult.profilesPicture = results.personalInformation[0].personalPic
+            res.send(frontEndResult);
         })
     });
     app.get('/userAccounts', isLoggedIn, function (req, res) {
