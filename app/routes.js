@@ -18,6 +18,10 @@ module.exports = function (app, passport) {
             })
         };
     });
+    app.get('/initiateRegistration', function (req, res) {
+        
+        res.sendFile(path.join(__dirname, '../views/register.html'));
+    });
     //First Step Registration
     app.post('/checkRegistrationEmail', function (req, res) {
         database.checkForRegisterationEmail(req.body.email, function (output) {
@@ -31,10 +35,10 @@ module.exports = function (app, passport) {
                 case 3:
                     result.emailExist = output.flag;
                     result.verificationEmailSent = EmailSender(req.email);
-                    if(result.verificationEmailSent)
+                    if (result.verificationEmailSent)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
-                        else
-                        result.message='مشکلی در ارسال پیش آمده لطفا دوباره تلاش کنید.';
+                    else
+                        result.message = 'مشکلی در ارسال پیش آمده لطفا دوباره تلاش کنید.';
 
                     break;
                 case 2:
