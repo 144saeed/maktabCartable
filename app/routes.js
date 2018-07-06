@@ -3,15 +3,11 @@ const encryptor = require('bcrypt');
 const path = require('path');
 module.exports = function (app, passport) {
 
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-    // show the login form
+
     app.get('/', function (req, res) {
         if (req.isAuthenticated()) {
             res.redirect('/userAccounts')
         }
-        // render the page and pass in any flash data if it exists
         else {
             res.sendFile(path.join(__dirname, '../views/login.html'), {
                 message: req.flash('loginMessage')
@@ -22,7 +18,6 @@ module.exports = function (app, passport) {
 
         res.sendFile(path.join(__dirname, '../views/register.html'));
     });
-    //First Step Registration
     app.post('/checkRegistrationEmail', function (req, res) {
         database.checkForRegisterationEmail(req.body.email, function (output) {
             let result = {
@@ -63,7 +58,6 @@ module.exports = function (app, passport) {
 
     });
 
-    // process the login form
     app.post('/',
         passport.authenticate('local-login', {
             successRedirect: '/userAccounts', // redirect to the secure profile section
@@ -90,11 +84,6 @@ module.exports = function (app, passport) {
             failureFlash: true // allow flash messages
         }));
 
-    // =====================================
-    // PROFILE SELECTION ===================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/userRolls', isLoggedIn, function (req, res) {
         database.userPersonalDataByUserId(req.user, (err, results, fields) => {
             let frontEndResult = {
@@ -126,7 +115,7 @@ module.exports = function (app, passport) {
     });
 
     //======================================
-    //Dahsboard personal====================
+    //Dahsboard ====================
     //======================================
     app.get('/dashboard/personal', (req, res) => {
 
