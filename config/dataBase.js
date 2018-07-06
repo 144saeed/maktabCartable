@@ -48,9 +48,80 @@ module.exports = {
             next(err, res, fields);
         });
     },
-    alterMyUserInformation() {}
+    checkForRegisterationEmail(email, next) {
+        let sqlsttmnt = "select isMainEmail, isVerified" +
+            " from emailInfo" +
+            " where email = ?;";
+        connection.query(sqlsttmnt, email, (err, results, fields) => {
+            if (results = undefined) {
+                next({
+                    flag: false,
+                    status: 0,
+                    message: "no such an email"
+                })
+            } else if (!results.isMainEmail) {
+                next({
+                    flag: false,
+                    status: 1,
+                    message: "this email address is not a registeration email"
+                })
+            } else if (results.isVerified) {
+                next({
+                    flag: false,
+                    status: 2,
+                    message: "this email address is verified already"
+                })
+            } else {
+                next({
+                    flag: true,
+                    status: 3,
+                    message: "this email should be verified"
+                })
+            }
+        });
+    },
+    alterMyUserInformation(id, dataToReplace, next) {
+        if (dataToReplace.type == "personal") {
+            alterMyPersonalInformation(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "professionalResume") {
+            alterMyProfessionalResume(id, dataToReplace.value, next);
+        }
+    }
 }
 
-let alterMyPersonalInformation = function (id, data) {
-    let sqlsttmnt = 'update user'
+let alterMyPersonalInformation = function (id, data, next) {
+    let sqlsttmnt = "update user" +
+        " set firstName=?" +
+        ",lastName=?" +
+        ",nationalId=?" +
+        ",fathersName=?" +
+        ",personalPic=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.firsName, data.lastName,
+        data.nationalId, data.fathersName, data.personalPic, id
+    ], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterMyProfessionalResume = function (id, data, next) {
+    let sqlsttmnt = "update proResume" +
+        " set jobTitle=?" +
+        ",institute=?" +
+        ",instituteAddress=?" +
+        ",phoneNumber=?" +
+        ",startDate=?" +
+        ",endDate=?" +
+        ",endingReason=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.jobTitle, data.institute,
+        data.instituteAddress, data.phoneNumber, data.startDate,
+        data.endDate, data.endingReason, id
+    ], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterMyEducatinalResume = function(id,data,next){
+    
 }

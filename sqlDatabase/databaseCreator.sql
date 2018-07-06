@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS `ecartable`.`emailInfo` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `email` VARCHAR(45) NULL,
+  `isMainEmail` TINYINT(1) NOT NULL DEFAULT 0,
+  `isVerified` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`, `user_id`),
   INDEX `fk_emailInfo_user1_idx` (`user_id` ASC),
   CONSTRAINT `fk_emailInfo_user1`
@@ -572,8 +574,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`) VALUES (DEFAULT, 1, 'saeedoveisi@a.com');
-INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`) VALUES (DEFAULT, 1, 'saeed@b.com');
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'saeedoveisi@a.com', DEFAULT, DEFAULT);
+INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (DEFAULT, 1, 'saeed@b.com', DEFAULT, DEFAULT);
 
 COMMIT;
 
@@ -605,7 +607,7 @@ COMMIT;
 START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`) VALUES (1, 'maktab13', 'front end', 'description1');
-INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`) VALUES (2, 'maktab14', 'back end', 'description2');
+INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`) VALUES (DEFAULT, 'maktab14', 'back end', 'desc2');
 
 COMMIT;
 
@@ -628,9 +630,9 @@ COMMIT;
 START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 1, 1, 1);
-INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 1, 2, 3);
 INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 2, 1, 1);
 INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 3, 1, 3);
+INSERT INTO `ecartable`.`profiles` (`id`, `user_id`, `term_id`, `rolls_id`) VALUES (DEFAULT, 1, 2, 3);
 
 COMMIT;
 
