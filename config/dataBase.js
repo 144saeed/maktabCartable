@@ -59,7 +59,7 @@ module.exports = {
                     status: 0,
                     message: "no such an email"
                 })
-            } else if (results.isMainEmail!=1) {
+            } else if (results.isMainEmail != 1) {
                 next({
                     flag: false,
                     status: 1,
@@ -80,16 +80,24 @@ module.exports = {
             }
         });
     },
-    alterMyUserInformation(id, dataToReplace, next) {
+    alterUserInformation(id, dataToReplace, next) {
         if (dataToReplace.type == "personal") {
-            alterMyPersonalInformation(id, dataToReplace.value, next);
+            alterPersonalInformation(id, dataToReplace.value, next);
         } else if (dataToReplace.type == "professionalResume") {
-            alterMyProfessionalResume(id, dataToReplace.value, next);
+            alterProfessionalResume(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "educationalResume") {
+            alterEducatinalResume(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "addressInformation") {
+            alterAddressInformtion(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "callInformation") {
+            alterCallInformtion(id, dataToReplace.value, next);
+        } else if (dataToReplace.type == "emailInformation") {
+            alterEmailInformtion(id, dataToReplace.value, next);
         }
     }
 }
 
-let alterMyPersonalInformation = function (id, data, next) {
+let alterPersonalInformation = function (id, data, next) {
     let sqlsttmnt = "update user" +
         " set firstName=?" +
         ",lastName=?" +
@@ -104,7 +112,7 @@ let alterMyPersonalInformation = function (id, data, next) {
     })
 }
 
-let alterMyProfessionalResume = function (id, data, next) {
+let alterProfessionalResume = function (id, data, next) {
     let sqlsttmnt = "update proResume" +
         " set jobTitle=?" +
         ",institute=?" +
@@ -122,6 +130,46 @@ let alterMyProfessionalResume = function (id, data, next) {
     })
 }
 
-let alterMyEducatinalResume = function(id,data,next){
-    
+let alterEducatinalResume = function (id, data, next) {
+    let sqlsttmnt = "update eduResume" +
+        " set level=?" +
+        ",institute=?" +
+        ",grade=?" +
+        ",startDate=?" +
+        ",endDate=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.level, data.institute, data.grade,
+        data.startDate, data.endDate, id
+    ], (err, results, fields) => {
+        next(err, results, fields);
+    })
+}
+
+let alterAddressInformtion = function (id, data, next) {
+    let sqlsttmnt = "update addressInfo" +
+        " set title=?" +
+        ",address=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.title, data.address, id], (err, results, fields) => {
+        next(err, results, fields);
+    });
+}
+
+let alterCallInformtion = function (id, data, next) {
+    let sqlsttmnt = "update callInfo" +
+        " set title=?" +
+        ",number=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.title, data.number, id], (err, results, fields) => {
+        next(err, results, fields);
+    });
+}
+
+let alterEmailInformtion = function (id, data, next) {
+    let sqlsttmnt = "update callInfo" +
+        " set email=?" +
+        " where id=?";
+    connection.query(sqlsttmnt, [data.email, id], (err, results, fields) => {
+        next(err, results, fields);
+    });
 }
