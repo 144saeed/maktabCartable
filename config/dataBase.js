@@ -80,6 +80,16 @@ module.exports = {
             }
         });
     },
+    registerEmailbyUserId(id) {
+        let sqlsttmnt = "update emailInfo" +
+            " set isVerified=true" +
+            " where isMainEmail" +
+            " and !isVerified" +
+            " and user_id=" + id + ";";
+        connection.query(sqlsttmnt, (err, results, fields) => {
+            next(err, results, fields);
+        });
+    },
     alterUserInformation(id, dataToReplace, next) {
         if (dataToReplace.type == "personal") {
             alterPersonalInformation(id, dataToReplace.value, next);
@@ -166,7 +176,7 @@ let alterCallInformtion = function (id, data, next) {
 }
 
 let alterEmailInformtion = function (id, data, next) {
-    let sqlsttmnt = "update callInfo" +
+    let sqlsttmnt = "update emailInfo" +
         " set email=?" +
         " where id=?";
     connection.query(sqlsttmnt, [data.email, id], (err, results, fields) => {
