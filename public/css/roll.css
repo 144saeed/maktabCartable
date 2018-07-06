@@ -1,47 +1,133 @@
-#content{
-    width: 600px;
-    height:300px;
-    margin: 50px auto;
-    box-shadow: 0 0 5px 2px #ccc;
-    padding: 5px;
+* {
+    box-sizing: border-box;
+    font-family: IRANsans;
 }
 
-#info ,#roll {
-    width: 90%;
-    height:40%;
-    border: 1px solid #eee;
-    margin: 5px auto;
-    padding: 5px;
-}
-
-#info div {
-    float: left;
-}
-
-#info .img{
-    width: 80px;
-    height: 80px;
-    margin: 5px;
-    background: url("../Images/icon/user_1.png") #eee no-repeat center;
-}
-
-
-#roll {
-    height: 55%;
-    border-color: transparent;
-}
-
-#roll .subroll {
-    width: 50%;
-    height: 50%;
-    float: left;
-    border: 1px solid #ccc;
-
-}
-
-
-h5 {
-    text-align: center;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    font-family: IRANsans;
+    margin: 0;
     padding: 0;
-    margin: 5px;
+    direction: rtl;
+    text-align: right;
+}
+
+body {
+    background: url("../Images/01/loginbox.png") no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#content {
+    position: relative;
+    width: 600px;
+    height: 300px;
+    margin-top: 25vh;
+    padding: 10px 30px;
+}
+
+#content>.tag {
+    position: absolute;
+    width: 50px;
+    height: 20px;
+    top: 30px;
+    right: -25px;
+}
+
+#profile {
+    height: 80px;
+}
+
+#profile #profileImg {
+    margin: 0 auto;
+    width: 130px;
+    height: 130px;
+    padding: 10px;
+    position: relative;
+    top: -50px;
+}
+
+#profile #profileImg img {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 5px 1px rgb(99, 99, 99) inset;
+}
+
+#rolls {
+    height: 180px;
+    padding-top: 10px;
+}
+
+#rolls>div {
+    height: 100%;
+    padding: 10px;
+}
+
+#rolls>div>div {
+    height: 50%;
+    padding: 5px 10px;
+}
+
+#rolls>div>div>div {
+    box-shadow: 0 5px 10px 1px rgb(233, 232, 232);
+    cursor: pointer;
+    transition: .5s;
+}
+
+#rolls>div>div>div:hover {
+    transform: scale(1.1)
+}
+
+#rolls>div>div div {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#rolls>div>div h6 {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#rolls>div>div p {
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+#rolls>div>div .admin {
+    background: url("../Images/icon/02.png") no-repeat center;
+    background-size: 50%;
+}
+
+#rolls>div>div .stud {
+    background: url("../Images/icon/01.png") no-repeat center;
+    background-size: 50%;
+}
+
+#rolls>div>div .super {
+    background: url("../Images/icon/03.png") no-repeat center;
+    background-size: 50%;
+}
+
+#rolls>div>div .tech {
+    background: url("../Images/icon/04.png") no-repeat center;
+    background-size: 50%;
+}
+
+.btn-floating.btn-small {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 8px;
+}
+
+.btn-floating.btn-small i {
+    line-height: 20px;
+    font-size: 12px;
 }
