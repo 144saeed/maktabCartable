@@ -618,6 +618,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
+INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (0, 'Admin', 'maktab administration');
 INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (1, 'student', 'student');
 INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (2, 'teacher', 'teacher');
 INSERT INTO `ecartable`.`rolls` (`id`, `title`, `descrition`) VALUES (3, 'supervisor', 'supervisor');
