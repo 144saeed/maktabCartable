@@ -102,7 +102,7 @@ module.exports = function (app, passport) {
                 'profilesPicture': ''
             };
             if (results.personalInformation[0].personalPic.toString() == "dir")
-                frontEndResult.profilesPicture = "Images/icon/user_1.png";
+                frontEndResult.profilesPicture = "Images/01/images.jpg";
             else
                 frontEndResult.profilesPicture = results.personalInformation[0].personalPic;
             frontEndResult.profilesData = results.profilesData;
