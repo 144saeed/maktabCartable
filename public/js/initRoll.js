@@ -14,19 +14,51 @@ $(document).ready(function () {
     }
    
     getJsonData("/userRolls", function (data) {
-        console.log(data);
-        // $("#profile").append("<div id='profileImg' class='white z-depth-1'>"
-        //     +"<img src='Images/01/images.jpg' alt='' class='blue-grey lighten-3'>"
-        // +"</div>")
+        console.log(data.profilesData);
+        console.log(data.profilesData.length);
+        console.log(data.profilesPicture);
+        $("#profile").append("<div id='profileImg' class='white z-depth-1'>"
+            +"<img src='" + data.profilesPicture + "' alt='profilesPicture' class='blue-grey lighten-3'>"
+        +"</div>")
         
-        // for(let i = 1 ; i <= data.length ; i++){
-        //     $("#subRolls").append("<div class='col s6 right'>"
-        //         +"<div class='col s12'>"
-        //             +"<div class='rollIcon col s4 right admin'></div>"
-        //             +"<h6>ادمین</h6>"
-        //             +"<p>ورود به عنوان کاربرادمین</p>"
-        //         +"</div>"
-        //     +"</div>")
-        // }
+        for(let i = 0 ; i < data.profilesData.length ; i++){
+            if(data.profilesData[i].rolls_id == 0 ){
+                $("#subRolls").append("<div class='col s6 right'>"
+                    +"<div class='col s12'>"
+                        +"<div class='rollIcon col s4 right admin'></div>"
+                        +"<h6>ادمین</h6>"
+                        +"<p>ورود به عنوان کاربر ادمین</p>"
+                    +"</div>"
+                +"</div>")
+            }
+            else if(data.profilesData[i].rolls_id == 1 ){
+                $("#subRolls").append("<div class='col s6 right'>"
+                    +"<div class='col s12'>"
+                        +"<div class='rollIcon col s4 right student'></div>"
+                        +"<h6>دانشجو</h6>"
+                        +"<p>ورود به عنوان کاربر دانشجو</p>"
+                    +"</div>"
+                +"</div>")
+            }
+            else if(data.profilesData[i].rolls_id == 2 ){
+                $("#subRolls").append("<div class='col s6 right'>"
+                    +"<div class='col s12'>"
+                        +"<div class='rollIcon col s4 right teacher'></div>"
+                        +"<h6>استاد</h6>"
+                        +"<p>ورود به عنوان کاربر استاد</p>"
+                    +"</div>"
+                +"</div>")
+            }
+            else if(data.profilesData[i].rolls_id == 3 ){
+                $("#subRolls").append("<div class='col s6 right'>"
+                    +"<div class='col s12'>"
+                        +"<div class='rollIcon col s4 right supervisor'></div>"
+                        +"<h6>استاد ارشد</h6>"
+                        +"<p>ورود به عنوان کاربر استاد ارشد</p>"
+                    +"</div>"
+                +"</div>")
+            }
+
+        }
     })
 })

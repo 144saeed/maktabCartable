@@ -105,17 +105,17 @@ body {
     background-size: 50%;
 }
 
-#rolls>div>div .stud {
+#rolls>div>div .student {
     background: url("../Images/icon/01.png") no-repeat center;
     background-size: 50%;
 }
 
-#rolls>div>div .super {
+#rolls>div>div .supervisor {
     background: url("../Images/icon/03.png") no-repeat center;
     background-size: 50%;
 }
 
-#rolls>div>div .tech {
+#rolls>div>div .teacher {
     background: url("../Images/icon/04.png") no-repeat center;
     background-size: 50%;
 }
