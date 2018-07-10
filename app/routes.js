@@ -82,6 +82,15 @@ module.exports = function (app, passport) {
             failureRedirect: '/', // redirect back to the signup page if there is an error
             failureFlash: true // allow flash messages
         }));
+    app.get('/userRegistration',  (req, res) => {
+        res.sendFile(path.join(__dirname, '../views/register.html'), {
+            message: req.flash('loginMessage'),
+            function (err) {
+                console.log(err);
+
+            }
+        })
+    })
     // =====================================
     // User Data Interaction ==============================
     // =====================================
@@ -111,11 +120,11 @@ module.exports = function (app, passport) {
             res.send(results);
         })
     });
-    app.get('/userAccounts', isLoggedIn, function (req, res) {
-        database.userPersonalDataByUserId(req.user, (err, results, fields) => {
-            res.sendFile(path.join(__dirname, '../views/roll.html'));
-            //With this route u will directed to rolls page to choose a roll wich user has.
-        })
+    app.get('/adminInitiatNewUser', isLoggedIn, function (req, res) {
+        res.sendFile(path.join(__dirname, '../views/adminInitiatNewUser.html'));
+    });
+    app.post('/adminInitiatNewUser', isLoggedIn, function (req, res) {
+        res.end();
     });
 
     // =====================================
@@ -129,23 +138,31 @@ module.exports = function (app, passport) {
     //======================================
     //Dahsboard ====================
     //======================================
-    app.get('/dashboard',isLoggedIn, (req, res) => {
+    app.get('/dashboard', isLoggedIn, (req, res) => {
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
-            message: req.flash('loginMessage'),function (err) {
+            message: req.flash('loginMessage'),
+            function (err) {
                 console.log(err);
-                
+
             }
         })
     })
-    app.post('/dashboard',isLoggedIn, (req, res) => {
+    app.post('/dashboard', isLoggedIn, (req, res) => {
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
-            message: req.flash('loginMessage'),function (err) {
+            message: req.flash('loginMessage'),
+            function (err) {
                 console.log(err);
-                
+
             }
         })
     })
 
+    //======================================
+    //AdminUserManagemant ==================
+    //======================================
+    app.post('/dashboard', isLoggedIn, (req, res) => {
+        res.end();
+    })
 };
 
 
@@ -186,7 +203,8 @@ function EmailSender(receiverEmail) {
             to: receiverEmail, // list of receivers
             subject: 'سامانه ثبت نام', // Subject line
             text: 'برای تکمیل ثبت نام خود به آدرس زیر مزاجعه کنید', // plain text body
-            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' // html body
+            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' + ' '
+            // html body
         };
 
         // send mail with defined transport object
