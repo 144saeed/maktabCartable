@@ -82,7 +82,9 @@ module.exports = function (app, passport) {
             failureRedirect: '/', // redirect back to the signup page if there is an error
             failureFlash: true // allow flash messages
         }));
-
+    // =====================================
+    // User Data Interaction ==============================
+    // =====================================
     app.get('/userRolls', isLoggedIn, function (req, res) {
         database.userPersonalDataByUserId(req.user, (err, results, fields) => {
             let frontEndResult = {
@@ -104,6 +106,17 @@ module.exports = function (app, passport) {
             //With this route u will directed to rolls page to choose a roll wich user has.
         })
     });
+    app.get('/UserFullInfo', isLoggedIn, function (req, res) {
+        database.userPersonalDataByUserId(req.user, (err, results, fields) => {
+            res.send(results);
+        })
+    });
+    app.get('/userAccounts', isLoggedIn, function (req, res) {
+        database.userPersonalDataByUserId(req.user, (err, results, fields) => {
+            res.sendFile(path.join(__dirname, '../views/roll.html'));
+            //With this route u will directed to rolls page to choose a roll wich user has.
+        })
+    });
 
     // =====================================
     // LOGOUT ==============================
@@ -116,7 +129,7 @@ module.exports = function (app, passport) {
     //======================================
     //Dahsboard ====================
     //======================================
-    app.get('/dashboard', (req, res) => {
+    app.get('/dashboard',isLoggedIn, (req, res) => {
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),function (err) {
                 console.log(err);
@@ -124,7 +137,7 @@ module.exports = function (app, passport) {
             }
         })
     })
-    app.post('/dashboard', (req, res) => {
+    app.post('/dashboard',isLoggedIn, (req, res) => {
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),function (err) {
                 console.log(err);
