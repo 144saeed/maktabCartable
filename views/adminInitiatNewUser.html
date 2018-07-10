@@ -1,0 +1,75 @@
+﻿<html>
+
+<head>
+
+</head>
+
+<body>
+    <div class="col s4 right white">
+        <h5 class="center-align">افزودن کاربر جدید</h5>
+
+        <form id="userForm">
+            <div class="panel">
+                <div class="panel-body">
+
+
+                    <div class="form-group">
+                        <label class="right-align"> : نام</label>
+                        <input type="text" id="txtName" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="right-align"> : نام خانوادگی</label>
+                        <input type="text" id="txtFamily" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="right-align"> : کدملی</label>
+                        <input type="text" id="txtFamily" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="right-align"> : رایانامه</label>
+                        <input type="text" id="txtEmail" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="right-align"> : نقش</label>
+                        <select id="ddlRule" class="browser-default">
+                            <option value="admin">Admin</option>
+                            <option value="supervisor">Supervisor</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="student">Student</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label> : توضیحات</label>
+                        <textarea id="txtDescriptionUser" ></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success" value="Save" id="btnSaveUser" />
+                        <input type="button" class="btn btn-danger" value="Cancel" id="btnCancelUser" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $("#btnSaveUser").click(function () {
+
+            $.post("/addUser", {
+                'email': $('#txtEmail').val(),
+                'firstName': $('#txtName').val(),
+                'lastName': $('#txtFamily').val(),
+                'rule': $('#ddlRule').val(),
+                'description': $('#txtDescriptionUser').val()
+            }, function (data) {
+                alert(data['msg'])
+            })
+        });
+    </script>
+</body>
+
+</html>
