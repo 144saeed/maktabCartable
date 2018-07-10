@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group">
                         <label class="right-align"> : کدملی</label>
-                        <input type="text" id="txtFamily" class="form-control" />
+                        <input type="text" id="numberId" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label class="right-align"> : رایانامه</label>
@@ -59,8 +59,9 @@
     <script>
         $("#btnSaveUser").click(function () {
 
-            $.post("/addUser", {
+            $.post("/adminInitiatNewUser", {
                 'email': $('#txtEmail').val(),
+				'numberId':$('#numberId').val(),
                 'firstName': $('#txtName').val(),
                 'lastName': $('#txtFamily').val(),
                 'rule': $('#ddlRule').val(),
