@@ -1,0 +1,60 @@
+﻿<html>
+<head>
+
+</head>
+<body>
+	<div class="col s4 right white">
+		<h5>اضافه کردن دوره جدید</h5>
+		<hr />
+		<form id="frmClass">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="form-group">
+						<label class="right-align">نام دوره :</label>
+						<input type="text" id="txtName" class="form-control" />
+					</div>
+
+                <div class="form-group">
+                    <label class="right-align">مسئول دوره : </label>
+                    <select id="ddlSupervisor" class="browser-default">
+                        <option value="html">0</option>
+                        <option value="css">1</option>
+                        <option value="js">2</option>
+                        <option value="network">3</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="right-align">تاریخ شروع دوره :</label>
+                    <input type="date" id="txtData" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label class="right-align">توضیحات</label>
+                    <textarea id="txtDescription" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <input type="button" class="btn btn-success" value="Save" id="btnSaveClass" />
+                    <input type="button" class="btn btn-danger" value="Cancel" id="btnCancel" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+    <script>
+            $("#btnSaveClass").click(function (event) {
+                event.preventDefault();
+
+				$.post("/addClass", {
+                'courseName': $('#txtName').val(),
+				'supervisor':$('#ddlSupervisor').val(),
+                'startDate': $('#txtData').val(),
+                'description': $('#txtDescription').val()
+            }, function (data) {
+               
+            })
+            });
+    </script>
+</body>
+</html>
