@@ -126,6 +126,12 @@ module.exports = function (app, passport) {
     app.post('/adminInitiatNewUser', isLoggedIn, function (req, res) {
         res.end();
     });
+    app.get('/addPractice', isLoggedIn, function (req, res) {
+        res.sendFile(path.join(__dirname, '../views/addPractice.html'));
+    });
+    app.post('/addPractice', isLoggedIn, function (req, res) {
+        res.end();
+    });
 
     // =====================================
     // LOGOUT ==============================
