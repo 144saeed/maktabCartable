@@ -116,10 +116,23 @@ module.exports = function (app, passport) {
     //======================================
     //Dahsboard ====================
     //======================================
-    app.post('/dashboard', (req, res) => {
-        console.log("hi");
-        res.sendFile(path.join(__dirname, '../views/dashboard.html'));
+    app.get('/dashboard', (req, res) => {
+        res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
+            message: req.flash('loginMessage'),function (err) {
+                console.log(err);
+                
+            }
+        })
     })
+    app.post('/dashboard', (req, res) => {
+        res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
+            message: req.flash('loginMessage'),function (err) {
+                console.log(err);
+                
+            }
+        })
+    })
+
 };
 
 
