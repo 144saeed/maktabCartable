@@ -3,7 +3,8 @@ h1,
 h2,
 h3,
 h4,
-h5 {
+h5,
+h6 {
     padding: 0;
     margin: 0;
     font-family: iransans;
@@ -49,7 +50,7 @@ header .info .name {
 
 header .info h6 {
     font-size: 12px;
-    padding:10px 10px;
+    padding:10px auto;
 }
 
 .rightMenu{
@@ -58,4 +59,25 @@ header .info h6 {
     top: 60px;
     right: 0;
     bottom: 0;
+}
+
+.content {
+    position: fixed;
+    /* border:1px solid red; */
+    top:70px;
+    left:10px;
+    right:210px;
+    bottom: 10px;
+    overflow: scroll;
+}
+
+.content h5{
+    font-family: iransans;
+    margin: 10px 0;
+}
+
+
+.content label {
+    direction: rtl;
+    
 }
