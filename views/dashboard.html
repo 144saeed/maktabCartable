@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,7 +14,7 @@
 
 
 
-
+    <script src="js/jquery-3.3.1.min.js"></script>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
@@ -51,7 +51,7 @@
         <div class="right rightMenu blue-grey darken-3 z-depth-2">
             <ul class="collapsible">
                 <li>
-                    <div class="collapsible-header blue-grey darken-2">
+                    <div class="collapsible-header blue-grey darken-2" data-view="adminInitiatNewUser" value="Add User" id="lnkAddUser">
                         <i class="material-icons">filter_drama</i>First</div>
                     <div class="collapsible-body">
                         <span>Lorem ipsum dolor si2 amet.</span>
@@ -73,8 +73,17 @@
                 </li>
             </ul>
         </div>
-    </div>
+        <div class="content row" id="viewPanel">
 
+        </div>
+    </div>
+    <script>
+        $(".collapsible-header").click(function () {
+            view = $(this).data("view");
+            //$("#viewPanel").load(view + ".html")
+            $("#viewPanel").load("/" + view);
+        });
+    </script>
 </body>
 
 </html>
