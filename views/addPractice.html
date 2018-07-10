@@ -1,0 +1,82 @@
+﻿<html>
+    <head>
+
+    </head>
+    <body>
+	<div class="col s4 right white">
+        <h5 class="center-align">اضافه کردن تمرین جدید</h5>
+        
+        <hr />
+        <form id="frm">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="right-align">شماره تمرین :</label>
+                        <input type="text" id="txtNumber" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="right-align">عنوان :</label>
+                        <select id="ddlTitle" class="browser-default">
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="js">Java Script</option>
+                            <option value="network">Network</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>توضیحات :</label>
+                        <textarea id="txtDescription" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>File :</label>
+                        <div>
+                            <input type="file" id="filFile" class="" /> <!-- multiple="multiple"/> -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success" value="Save" id="btnSave" />
+                        <input type="button" class="btn btn-danger" value="Cancel" id="btnCancel" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <script>
+            $("#btnSave").click(function (event) {
+                event.preventDefault();
+                var data = new FormData();
+                var files = $("#filFile")[0].files;
+                if (files.length > 0) { 
+alert("1")				
+                   data.append("file", files[0])
+                }
+
+                data.append("Number", $("#txtNumber").val());
+                data.append("Title", $("#ddlTitle").val());
+                data.append("Description", $("#txtDescription").val());
+
+             //   var form = $('#frm')[0];
+             //   var data = new FormData(form);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/addPractice",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (data) {
+                        alert("success");
+
+                    },
+                    error: function (e) {
+                        alert("error");
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
