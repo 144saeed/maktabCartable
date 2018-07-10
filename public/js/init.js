@@ -13,7 +13,8 @@ $(document).ready(function () {
                 "<div class='input-field inline'>" +
                 "<input id='email' type='email' class='validate' name=''>" +
                 "<label for='email'>رایانامه</label>" +
-                "<span class='helper-text' data-error='اشتباه است!!' data-success='سپاس!'>" +
+                "<span class='helper-text' data-error='اشتباه است!!' data-success='سپاس!'> <br/>" +
+                "<span id='msg-server'style='color : red' ></span> "+
                 "لطفا برای ثیت نام رایانامه خود را وارد کنید" +
                 "</span>" +
                 "</div>" +
@@ -25,8 +26,11 @@ $(document).ready(function () {
             $("#btn-ckeckEmail").click(function () {
                 $.post("/checkRegistrationEmail", { 'email': $('#email').val() }, function (data) {
 
-                    alert(data['emailexist'])
-                    alert(data['verificationEmailSEnd'])
+                   //alert(data['emailExist'])
+                   //alert(data['verificationEmailSent'])
+                   // alert(data['message'])
+                    $("#msg-server").html(data['message'])
+                    
                 })
             });
         })
