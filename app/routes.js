@@ -124,6 +124,7 @@ module.exports = function (app, passport) {
         res.sendFile(path.join(__dirname, '../views/adminInitiatNewUser.html'));
     });
     app.post('/adminInitiatNewUser', isLoggedIn, function (req, res) {
+        console.log("adminInitiatNewUser");
         res.end();
     });
     app.get('/addPractice', isLoggedIn, function (req, res) {
