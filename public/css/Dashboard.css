@@ -74,7 +74,7 @@ header .info h6 {
 /*----------- content style ------------*/
 /*-------------------------------------*/
 
-#content{
+#viewPanel{
     position: fixed;
     top:60px;
     right:200px;
@@ -151,7 +151,7 @@ header .info h6 {
     margin-top: 8px;
 }
 
-#content textarea{
+#viewPanel textarea{
     max-width:67%;
     min-width: 67%;
     max-height: 90px;
@@ -161,29 +161,29 @@ header .info h6 {
     padding: 3px;
     font-family: iransans;
 }
-#content textarea:focus{
+#viewPanel textarea:focus{
     border: 1px solid #26a69a;
     
 }
 
-#content .select {
+#viewPanel .select {
     height: 60px;
     
     
 }
 
-#content .select select {
+#viewPanel .select select {
     height: 30px;
     font-size: 13px;
     margin: 20px 5px;
 }
 
-#content .file{
+#viewPanel .file{
     /* border: 1px solid red; */
     height: 60px;
 }
 
-#content .button {
+#viewPanel .button {
     height: auto;
     margin: 0px auto;
     padding:90px 10px;
