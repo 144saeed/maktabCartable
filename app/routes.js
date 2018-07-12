@@ -28,6 +28,7 @@ module.exports = function (app, passport) {
             switch (output.status) {
                 case 3:
                     result.emailExist = output.flag;
+
                     result.verificationEmailSent = EmailSender(req.email);
                     if (result.verificationEmailSent)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
@@ -149,6 +150,9 @@ module.exports = function (app, passport) {
     app.post('/addClass', isLoggedIn, function (req, res) {
         res.end();
     });
+    app.get('/userProfile', isLoggedIn, function (req, res) {
+        res.sendFile(path.join(__dirname, '../views/userProfile.html'));
+    });
 
     // =====================================
     // LOGOUT ==============================
@@ -162,6 +166,7 @@ module.exports = function (app, passport) {
     //Dahsboard ====================
     //======================================
     app.get('/dashboard', isLoggedIn, (req, res) => {
+        res.cookie('currentUserProfile',global.currentUserProfile);
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -172,7 +177,6 @@ module.exports = function (app, passport) {
     })
     app.post('/dashboard', isLoggedIn, (req, res) => {
         global.currentUserProfile=req.user;
-
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),
             function (err) {
