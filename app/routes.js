@@ -28,8 +28,10 @@ module.exports = function (app, passport) {
             switch (output.status) {
                 case 3:
                     result.emailExist = output.flag;
-
-                    result.verificationEmailSent = EmailSender(req.email,verificationCode);
+                    doAnAction(0, "getRegistrationLink",req.body.email, (responses,values)=>{
+                        result.verificationEmailSent = EmailSender(req.email,values.link);
+                    });
+                    
                     if (result.verificationEmailSent)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
                     else
@@ -84,11 +86,15 @@ module.exports = function (app, passport) {
             failureFlash: true // allow flash messages
         }));
     app.get('/userRegistration',  (req, res) => {
+        doAnAction(0, "getRegistrationLink",req.body.email, (responses,values)=>{
+            if(!req.verificationCode==values.link)
+            res.send("لینک غیر مجاز است");
+        });
+        res.cookie.currentUserEmail=req.body.email;
         res.sendFile(path.join(__dirname, '../views/register.html'), {
             message: req.flash('loginMessage'),
             function (err) {
                 console.log(err);
-
             }
         })
     })
@@ -176,7 +182,7 @@ module.exports = function (app, passport) {
         })
     })
     app.post('/dashboard', isLoggedIn, (req, res) => {
-        global.currentUserProfile=req.rollId;
+        global.currentUserProfile=req.body.rollId;
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -233,7 +239,10 @@ function EmailSender(receiverEmail,verificationCode) {
             to: receiverEmail, // list of receivers
             subject: 'سامانه ثبت نام', // Subject line
             text: 'برای تکمیل ثبت نام خود به آدرس زیر مزاجعه کنید', // plain text body
-            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' + 'http://127.0.0.1:8080/userRegistration?verificationCode='
+            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' + 
+            'http://127.0.0.1:8080/userRegistration?verificationCode='+verificationCode+
+            '&email='+receiverEmail
+
             // html body
         };
 

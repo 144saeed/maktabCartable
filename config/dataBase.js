@@ -108,8 +108,11 @@ module.exports = {
     },
 
     doAnAction(profileId, action, data, next) {
-        if (action.toLowerCase() == "adduser") {
+        action = action.toLowerCase();
+        if (action == "adduser") {
             addUser(profileId, data, next)
+        } else if (action == "getregistrationlink") {
+            getRegistrationLink(data, next);
         }
     },
     regenerateVerificationLink(email, next) {
@@ -401,6 +404,31 @@ let generateSignUpLink = function (id, next) {
         (err, ans) => {
             next(ans);
         })
+}
+
+let getRegistrationLink = function (email, next) {
+    let sqlstatment = "select emailInfo.*, verificationLinks.*, verificationLinks.id as linkId" +
+        " from emailInfo" +
+        " inner join verificationLinks" +
+        " on verificationLinks.emailInfo_id = emailInfo.id" +
+        " where emailInfo.email=?";
+    connection.query(sqlstatment, email, (err, res) => {
+        if (err) {
+            responses = {
+                flag: false,
+                error: err,
+            }
+            next(responses);
+        } else if (res.length == 0) {
+            responses = {
+                flag: false,
+                error: "email address did not found",
+            }
+            next(responses);
+        } else {
+            next(null, res)
+        }
+    });
 }
 
 
