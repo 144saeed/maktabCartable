@@ -1,6 +1,18 @@
-#logBox{
+﻿#logBox {
     width: 300px;
-    height: 400px;
+    height: 420px;
     top: -75px;
     right: 200px;
+}
+
+#invalid-number {
+    display: none;
+    color: red;
+    padding-left: 5px;
+}
+
+#valid-number {
+    display: none;
+    color: green;
+    padding-left: 5px;
 }

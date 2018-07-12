@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,33 +15,35 @@
 
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/materialize.min.js"></script>
-
+    <script src="js/register.js"></script>
 
 </head>
 
 <body>
 
 
-    <form action="/" method="POST">
+    <form >
         <div class="content blue-grey darken-4">
             <div id="logBox" class=" logBox blue-grey lighten-5">
                 <div class="container">
                     <div class="row mar-t-2">
                         <h5 class="center-align green-text text-darken-4">ثبت نام اولیه</h5>
                         <div class="input-field col s12">
-                            <input id="username" type="text" class="validate" name="username">
+                            <input id="username" type="text" class="validate" name="username" onkeypress="check(event)" onkeyup="checkMelliCode()">
+							<span id="valid-number" class="center-align text-darken-6">کد ملی وارد شده معتبر می باشد</span>
+                            <span id="invalid-number" class="center-align text-darken-4">کد ملی وارد شده نامعتبر می باشد</span>
                             <label for="username">نام کاربری</label>
                             <span class="helper-text" data-error="wrong" data-success="right">نام کاربری همان کد ملی می باشد</span>
                         </div>
                         <div class="input-field col s12">
-                            <input id="password" type="password" class="validate" name="password">
+                            <input id="password" type="password" class="validate" name="password" disabled="true">
                             <label for="password">گذرواژه</label>
                         </div>
                         <div class="input-field col s12">
-                            <input id="repassword" type="password" class="validate" name="repassword">
+                            <input id="repassword" type="password" class="validate" name="repassword" disabled="true" onkeyup="chekhPassword()">
                             <label for="repassword">تکرار گذرواژه</label>
                         </div>
-                        <button class="waves-effect waves-light btn mar-t-1" type="submit" name="action"> ثبت نام
+                        <button class="waves-effect waves-light btn mar-t-1" type="button" name="action" id="btn-register" disabled="true"> ثبت نام
                         </button>
                     </div>
                 </div>
