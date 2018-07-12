@@ -174,6 +174,14 @@ module.exports = function (app, passport) {
     //AdminUserManagemant ==================
     //======================================
     app.post('/dashboard', isLoggedIn, (req, res) => {
+        let userData={
+            "firstName":"",
+            "lastName":"",
+            "nationalID":"",
+            "email":"",            
+            "roleID":"",
+            "description":""
+        };
         res.end();
     })
 };
