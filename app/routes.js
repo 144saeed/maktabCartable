@@ -133,6 +133,12 @@ module.exports = function (app, passport) {
     app.post('/addPractice', isLoggedIn, function (req, res) {
         res.end();
     });
+    app.get('/addClass', isLoggedIn, function (req, res) {
+        res.sendFile(path.join(__dirname, '../views/addClass.html'));
+    });
+    app.post('/addClass', isLoggedIn, function (req, res) {
+        res.end();
+    });
 
     // =====================================
     // LOGOUT ==============================
