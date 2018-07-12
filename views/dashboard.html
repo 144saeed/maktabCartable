@@ -103,7 +103,7 @@
         </div>
     </div>
     <script>
-        $(".collapsible-header").click(function () {
+        $(".content>a").click(function () {
             view = $(this).data("view");
             //$("#viewPanel").load(view + ".html")
             $("#viewPanel").load("/" + view);
