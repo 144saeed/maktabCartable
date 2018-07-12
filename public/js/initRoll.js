@@ -58,7 +58,7 @@ $(document).ready(function () {
         $("#subRolls > .select ").on("click", function () {
             rollId = $(this).attr("value");
             console.log(rollId)
-            $.post("/dashboard",function(data){window.location="/dashboard";} );
+            $.post("/dashboard",{rollId:rollId},function(data){window.location="/dashboard";} );
         })
     })
 

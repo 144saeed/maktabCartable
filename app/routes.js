@@ -29,7 +29,7 @@ module.exports = function (app, passport) {
                 case 3:
                     result.emailExist = output.flag;
 
-                    result.verificationEmailSent = EmailSender(req.email);
+                    result.verificationEmailSent = EmailSender(req.email,verificationCode);
                     if (result.verificationEmailSent)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
                     else
@@ -176,7 +176,7 @@ module.exports = function (app, passport) {
         })
     })
     app.post('/dashboard', isLoggedIn, (req, res) => {
-        global.currentUserProfile=req.user;
+        global.currentUserProfile=req.rollId;
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -208,7 +208,7 @@ function isLoggedIn(req, res, next) {
 }
 
 //Email Sender
-function EmailSender(receiverEmail) {
+function EmailSender(receiverEmail,verificationCode) {
     var nodemailer = require('nodemailer');
 
     nodemailer.createTestAccount((err, account) => {
@@ -233,7 +233,7 @@ function EmailSender(receiverEmail) {
             to: receiverEmail, // list of receivers
             subject: 'سامانه ثبت نام', // Subject line
             text: 'برای تکمیل ثبت نام خود به آدرس زیر مزاجعه کنید', // plain text body
-            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' + ' '
+            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' + 'http://127.0.0.1:8080/userRegistration?verificationCode='
             // html body
         };
 
