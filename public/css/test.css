@@ -1,0 +1,88 @@
+* {
+    font-family: iransans;
+}
+
+ul:not(.browser-default) {
+    padding: 10px;
+}
+
+.custom {
+    direction: rtl;
+    border: none;
+    box-shadow: none;
+}
+
+.custom li {
+    margin: 10px 0;
+}
+
+.custom .big {
+    padding: 5px;
+    border: none;
+    border-right: 8px solid #eceff1;
+}
+
+.collapsible-body {
+    border: none;
+    padding: 10px 20px;
+}
+
+
+ul#accardion {
+    width: 100%;
+    padding: 10px;
+    list-style: none;
+    font-family: iransans;
+    direction: rtl;
+}
+
+ul#accardion>li {
+    margin-bottom: 2px;
+     
+}
+
+ul#accardion>li>label {
+    padding: 8px 2px;
+    text-indent: 5px;
+    width:100%; 
+    display: inline-block;
+    cursor: pointer;
+    border-right:3px solid #546e7a;
+    transition: .5s;
+    font-size: 14px;
+}
+
+
+
+ul#accardion>li>.content {
+    margin-top: 7px;
+    height: 0;
+    overflow: hidden;
+}
+
+ul#accardion>li>input {
+    display: none;
+}
+
+ul#accardion>li>input:checked~.content {
+    height: 100%;
+    padding-top: 5px;
+}
+
+ul#accardion>li>input:checked+label {
+    border-right:3px solid #cfd8dc;
+}
+
+ul#accardion>li>.content>a {
+    display: block;
+    margin-bottom: 2px;
+    padding: 8px 20px;
+    text-decoration: none;
+    color: #cfd8dc;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+ul#accardion>li>.content>a.sel {
+    background:#455a64;
+}

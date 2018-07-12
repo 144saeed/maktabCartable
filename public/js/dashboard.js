@@ -7,7 +7,7 @@ $(document).ready(function () {
     $("#editUserInfo").click(function(){
         $(this).css({"display":"none"});
         $("#saveUserInfo").css({"display":"block"});
-        $("#userInfo input").removeAttr("disabled");
+        $("input").prop( "disabled", false );
         
     })
 })
