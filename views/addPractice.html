@@ -3,44 +3,53 @@
 
     </head>
     <body>
-	<div class="col s4 right white">
-        <h5 class="center-align">اضافه کردن تمرین جدید</h5>
-        
-        <hr />
         <form id="frm">
-            <div class="panel">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label class="right-align">شماره تمرین :</label>
-                        <input type="text" id="txtNumber" class="form-control" />
+            <div class="userInfo col s4 right">
+                <div class="col s12 white sub_userInfo z-depth-1">
+                    <div class="col s12 titr">
+                        <h6 class="center-align col s12">افزودن تمرین</h6>
                     </div>
 
-                    <div class="form-group">
-                        <label class="right-align">عنوان :</label>
-                        <select id="ddlTitle" class="browser-default">
-                            <option value="html">HTML</option>
+                    <div class="col s12">
+                        <label for="txtNumber" class="rtl right-align col s4 right"> : شماره تمرین</label>
+                        <input type="text" id="txtNumber" class="form-control col s7 right" />
+                    </div>
+
+
+
+                    <div class="select col s12">
+                        <label class="rtl right-align col s4 right"> : عنوان</label>
+                        <select id="ddlTitle" class="browser-default col s6">
+                            <option value="html" selected>HTML</option>
                             <option value="css">CSS</option>
                             <option value="js">Java Script</option>
                             <option value="network">Network</option>
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>توضیحات :</label>
-                        <textarea id="txtDescription" class="form-control" />
+
+
+                    <div class="file col s12">
+                        <label for="filFile" class="rtl right-align col s4 right"> : آپلود فایل</label>
+                        <div class="file-field input-field col s8">
+                                <div class="btn-small">
+                                  <span>File</span>
+                                  <input id="filFile" type="file">
+                                </div>
+                                <div class="file-path-wrapper">
+                                  <input class="file-path validate" type="text">
+                                </div>
+                              </div>
+                    </div>
+                    <div class="right col s12">
+                        <label for="txtDescriptionUser" class="rtl right-align col s4 right"> : توضیحات</label>
+                        <textarea id="txtDescriptionUser" class="form-control col s8 rtl right-align"></textarea>
+                    </div>
+                    <div class="col s12 button ">
+                        <button id="btnSave" class="waves-effect waves-light btn-small"> ذخیره تمرین </button>
+                        <button id="btnCancel" class="waves-effect waves-light btn-small red"> انصراف </button>
                     </div>
 
-                    <div class="form-group">
-                        <label>File :</label>
-                        <div>
-                            <input type="file" id="filFile" class="" /> <!-- multiple="multiple"/> -->
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="button" class="btn btn-success" value="Save" id="btnSave" />
-                        <input type="button" class="btn btn-danger" value="Cancel" id="btnCancel" />
-                    </div>
                 </div>
             </div>
         </form>

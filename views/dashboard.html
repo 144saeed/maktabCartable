@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/icon.css">
     <link rel="stylesheet" href="css/font.css">
     <link rel="stylesheet" href="css/Dashboard.css">
+    <link rel="stylesheet" href="css/test.css">
 
 
 
@@ -19,13 +20,14 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js">
     </script>
+    <script src="js/dashboard.js"></script>
 
 
 </head>
 
 <body class="blue-grey lighten-5 ">
     <div class="row">
-        <header class="col s12 white z-depth-1 ">
+        <header class="col s12 white z-depth-2 ">
             <div class="icon left center-align">
                 <i class="small material-icons blue-grey-text text-lighten-2 center-align">power_settings_new</i>
             </div>
@@ -49,28 +51,51 @@
             </div>
         </header>
         <div class="right rightMenu blue-grey darken-3 z-depth-2">
-            <ul class="collapsible">
+            <ul id="accardion">
+
                 <li>
-                    <div class="collapsible-header blue-grey darken-2" data-view="adminInitiatNewUser" value="Add User" id="lnkAddUser">
-                        <i class="material-icons">filter_drama</i>First</div>
-                    <div class="collapsible-body">
-                        <span>Lorem ipsum dolor si2 amet.</span>
+                    <input type="radio" id="c0" name="na">
+                    <label class="white-text blue-grey darken-1" for="c0"> پروفایل </label>
+                    <div class="content">
+                        <a  data-view="userProfile">مشاهده پروفایل </a>
+                        <a >مشاهده کاربران </a>
+                        <a href="#" data-view="adminInitiatNewUser">افزودن کار بر جدید </a>
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header blue-grey darken-2" data-view="AddPractice" value="Add Practice" id="lnkAddPractice">
-                        <i class="material-icons">place</i>Second</div>
-                    <div class="collapsible-body">
-                        <span>Lorem ipsum dolor sit amet.</span>
+                    <input type="radio" id="c1" name="na">
+                    <label class="white-text blue-grey darken-1" for="c1"> امور مالی </label>
+                    <div class="content">
+                        <a href="#">مالی اساتید </a>
+                        <a href="#">مالی دانشجویان </a>
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header blue-grey darken-2" data-view="addClass" value="Add Class" id="lnkAddclass">
-                        <i class="material-icons">whatshot</i>Third</div>
-                    <div class="collapsible-body">
-                        <span>Lorem ipsum dolor sit amet.</span>
+                    <input type="radio" id="c2" name="na">
+                    <label class="white-text blue-grey darken-1" for="c2"> دوره ها </label>
+                    <div class="content">
+                        <a data-view="addClass">تعریف دوره جدبد </a>
+                        <a href="#">مشاهده دوره ها </a>
                     </div>
                 </li>
+                <li>
+                    <input type="radio" id="c3" name="na">
+                    <label class="white-text blue-grey darken-1" for="c3"> تمارین </label>
+                    <div class="content">
+                        <a href="" data-view="addPractice">افزودن تمرین </a>
+                        <a href="#">مشاهده تمارین </a>
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" id="c4" name="na">
+                    <label class="white-text blue-grey darken-1" for="c4"> کتابخانه </label>
+                    <div class="content">
+                        <a href="#">افزودن کتاب </a>
+                        <a href="#">مشاهده کتاب ها </a>
+                    </div>
+                </li>
+
+
             </ul>
         </div>
         <div class="content row" id="viewPanel">
