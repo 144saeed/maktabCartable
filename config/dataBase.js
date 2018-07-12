@@ -31,11 +31,11 @@ module.exports = {
             " select *" +
             " from eduResume" +
             " where user_id=?;" +
-            " select profiles.id as 'profile_id', profiles.term_id," +
-            " profiles.rolls_id, rolls.title as 'roll_title', term.title as 'term_title'" +
+            " select profiles.profiles_id, profiles.term_id," +
+            " profiles.rolls_id, rolls.rolls_title, term.title as 'term_title'" +
             " from profiles" +
             " inner join rolls" +
-            " on profiles.rolls_id = rolls.id" +
+            " on profiles.rolls_id = rolls.rolls_id" +
             " inner join term" +
             " on profiles.term_id = term.id" +
             " where profiles.user_id = ?;";
