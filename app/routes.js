@@ -125,6 +125,16 @@ module.exports = function (app, passport) {
     });
     app.post('/adminInitiatNewUser', isLoggedIn, function (req, res) {
         console.log("adminInitiatNewUser");
+        let userInsertData={
+            "firstName":"",
+            "lastName":"",
+            "userID":"",
+            "email":"",
+            "password":"",
+            "description":"",
+            "role":"",
+            "numberId":""
+        };
         res.end();
     });
     app.get('/addPractice', isLoggedIn, function (req, res) {
@@ -161,6 +171,8 @@ module.exports = function (app, passport) {
         })
     })
     app.post('/dashboard', isLoggedIn, (req, res) => {
+        global.currentUserProfile=req.user;
+
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -174,14 +186,7 @@ module.exports = function (app, passport) {
     //AdminUserManagemant ==================
     //======================================
     app.post('/dashboard', isLoggedIn, (req, res) => {
-        let userData={
-            "firstName":"",
-            "lastName":"",
-            "nationalID":"",
-            "email":"",            
-            "roleID":"",
-            "description":""
-        };
+
         res.end();
     })
 };
