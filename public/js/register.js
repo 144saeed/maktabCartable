@@ -18,7 +18,13 @@ function check() {
         $('#noMatch').css({ 'display': 'none' })
 
         $.post("/initPasswordByUser", { 'password': $('#password').val()  , 'email':data }, function (data) {
-
+            if (data == 0) {
+                $('#faild').css({ 'display': 'block' })
+            }
+            else {
+                $('#success').css({ 'display': 'block' })
+                $.get('/')
+            }
         })
     }
 }
