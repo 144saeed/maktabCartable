@@ -30,10 +30,13 @@ module.exports = function (app, passport) {
                 case 3:
                     result.emailExist = output.flag;
                     database.doAnAction(0, "getRegistrationLink", req.body.email, (responses, values) => {
-                        result.verificationEmailSent = EmailSender(req.body.email, values.link);
+                        if (values.length > 0)
+                            result.verificationEmailSent = EmailSender(req.body.email, values[0].link);
+                        else
+                            result.verificationEmailSent = null;
                     });
 
-                    if (result.verificationEmailSent)
+                    if (result.verificationEmailSent!=null)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
                     else
                         result.message = 'مشکلی در ارسال پیش آمده لطفا دوباره تلاش کنید.';
@@ -99,6 +102,21 @@ module.exports = function (app, passport) {
             }
         })
     })
+    app.post('/initPasswordByUser', isLoggedIn, function (req, res) {
+        let userInitPasswordData = {
+            password: req.body.password,
+            email: req.body.email,
+
+        };
+        database.doAnAction(1, "addUser", userInitPasswordData, function callback(status, responses) {
+            if (status === null)
+                res.send("Succeed!");
+            else
+                res.send("Faild!");
+
+        })
+
+    });
     // =====================================
     // User Data Interaction ==============================
     // =====================================
@@ -243,9 +261,9 @@ function EmailSender(receiverEmail, verificationCode) {
             to: receiverEmail, // list of receivers
             subject: 'سامانه ثبت نام', // Subject line
             text: 'برای تکمیل ثبت نام خود به آدرس زیر مزاجعه کنید', // plain text body
-            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' +
+            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br><a href="' +
                 'http://127.0.0.1:8080/userRegistration?verificationCode=' + verificationCode +
-                '&email=' + receiverEmail
+                '&email=' + receiverEmail + '">لینک فعال سازی</a>'
 
             // html body
         };
