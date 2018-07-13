@@ -49,6 +49,9 @@ module.exports = {
             next(err, res, fields);
         });
     },
+    // getUserPersonalInfo(userId, next) {
+    //     let sqlstatment = 
+    // },
     checkForRegisterationEmail(email, next) {
         let sqlsttmnt = "select isMainEmail, isVerified" +
             " from emailinfo" +
@@ -137,6 +140,7 @@ module.exports = {
             })
         }
     },
+    getUserData(profileId, requiredData) {},
     regenerateVerificationLink(email, next) {
         let responses = [];
         let sqlstatment = "select emailInfo.*, verificationLinks.*, user.*, verificationLinks.id as linkId" +
@@ -298,9 +302,9 @@ let alterEmailInformtion = function (id, data, next) {
 let addCourse = function (data, next) {
     let responses = [];
     addRecord({
-        table:"term",
+        table: "term",
         data
-    },responses,next(responses))
+    }, responses, next(responses))
 }
 
 let addRecord = function (req, res, next) {
@@ -494,6 +498,7 @@ let linkInvalidator = function (email, output, next) {
         " where emailInfo.email=?";
     connection.query(sqlstatment, [email], (error, results) => {
         output.push({
+            flag: (err == null),
             error,
             results
         })
@@ -525,13 +530,16 @@ let signup = function (email, password, output, next) {
         " on emailInfo.user_id=user.id" +
         " set password=?" +
         " where emailInfo.email=?";
-    connection.query(sqlstatment, [password, email], (err, res) => {
-        output.push({
-            error: err,
-            results: res
-        })
-        next(output);
-    });
+    password = hasher.hash(password, 10, (err, ans) => {
+        connection.query(sqlstatment, [ans, email], (err, res) => {
+            output.push({
+                flag: (err == null),
+                error: err,
+                results: res
+            })
+            next(output);
+        });
+    })
 }
 
 let signUpAndLinkInvalidation = function (data, next) {
@@ -550,11 +558,15 @@ let signUpAndLinkInvalidation = function (data, next) {
             responses.push(status);
             signup(data.email, data.password, responses, (responses) => {
                 linkInvalidator(data.email, responses, (responses) => {
-                    next(responses);
+                    stat = true;
+                    responses.forEach(element => {
+                        stat = (stat && element.flag)
+                    });
+                    next(stat, responses);
                 })
             })
         } else {
-            next(status)
+            next(false, status)
         }
     })
 }
