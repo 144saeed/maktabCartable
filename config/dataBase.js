@@ -416,7 +416,6 @@ let getRegistrationLink = function (email, next) {
         " on verificationLinks.emailInfo_id = emailInfo.id" +
         " where emailInfo.email=?";
     connection.query(sqlstatment, email, (err, res) => {
-        res=res[0];
         if (err) {
             responses = {
                 flag: false,
