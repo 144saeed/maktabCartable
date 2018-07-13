@@ -632,8 +632,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `numOfSessions`) VALUES (1, 'maktab13', 'front end', 'description1', NULL, NULL, NULL);
-INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `numOfSessions`) VALUES (DEFAULT, 'maktab14', 'back end', 'desc2', NULL, NULL, NULL);
+INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `numOfSessions`) VALUES (, 'مکتب 13', 'فرانت اند', 'تدریس طراحی وبسیایت با تمرکز بر طراحی سمت کاربر', '2018-01-01', '', );
 
 COMMIT;
 
