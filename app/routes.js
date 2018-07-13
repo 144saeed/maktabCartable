@@ -102,17 +102,17 @@ module.exports = function (app, passport) {
             }
         })
     })
-    app.post('/initPasswordByUser', isLoggedIn, function (req, res) {
+    app.post('/initPasswordByUser', function (req, res) {
         let userInitPasswordData = {
             password: req.body.password,
             email: req.body.email,
 
         };
-        database.doAnAction(1, "addUser", userInitPasswordData, function callback(status, responses) {
+        database.doAnAction(1, "signupandlinkinvalidation", userInitPasswordData, function callback(status, responses) {
             if (status === null)
-                res.send("Succeed!");
+                res.send("1");
             else
-                res.send("Faild!");
+                res.send("0");
 
         })
 
