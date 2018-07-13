@@ -2,7 +2,8 @@
 
 function check() {
     var data = getCookie('currentUserEmail')
-    // console.log("data : " + data)
+
+    console.log("data : " + data)
     var pass = $('#password').val()
     var repass = $('#repassword').val()
     if (pass == "" || repass == "") {
@@ -16,21 +17,9 @@ function check() {
 
         $('#checkFild').css({ 'display': 'none' })
         $('#noMatch').css({ 'display': 'none' })
-        var sendData={ 'password': $('#password').val(), 'email': data };
-        $.ajax({
-            url: "/initPasswordByUser",
-            type: "POST",
-            data:sendData ,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                if (data == 0) {
-                    $('#faild').css({ 'display': 'block' })
-                }
-                else {
-                    $('#success').css({ 'display': 'block' })
-                    $.get('/')
-                }
+        $.post("/initPasswordByUser", { 'password': $('#password').val(), 'email': data }, function (data) {
+            if (data == 0) {
+                $('#faild').css({ 'display': 'block' })
             }
             else {
                 $('#success').css({ 'display': 'block' })
@@ -60,7 +49,10 @@ function getCookie(name) {
         for (var i = 0 ; i < cookie.length ; i++) {
             if (cookie[i] == name) {
                 // console.log(cookie[i + 1])
-                return cookie[i + 1]
+                var str = cookie[i + 1]
+                var res = str.replace(/%40/, "@")
+                console.log(res)
+                return res
             }
         }
     }
