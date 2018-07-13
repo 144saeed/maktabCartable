@@ -60,24 +60,27 @@ module.exports = {
                     status: 0,
                     message: "no such an email"
                 })
-            } else if (results.isMainEmail != 1) {
-                next({
-                    flag: false,
-                    status: 1,
-                    message: "this email address is not a registeration email"
-                })
-            } else if (results.isVerified) {
-                next({
-                    flag: false,
-                    status: 2,
-                    message: "this email address is verified already"
-                })
             } else {
-                next({
-                    flag: true,
-                    status: 3,
-                    message: "this email should be verified"
-                })
+                results = results[0];
+                if (!results.isMainEmail) {
+                    next({
+                        flag: false,
+                        status: 1,
+                        message: "this email address is not a registeration email"
+                    })
+                } else if (results.isVerified) {
+                    next({
+                        flag: false,
+                        status: 2,
+                        message: "this email address is verified already"
+                    })
+                } else {
+                    next({
+                        flag: true,
+                        status: 3,
+                        message: "this email should be verified"
+                    })
+                }
             }
         });
     },
@@ -413,6 +416,7 @@ let getRegistrationLink = function (email, next) {
         " on verificationLinks.emailInfo_id = emailInfo.id" +
         " where emailInfo.email=?";
     connection.query(sqlstatment, email, (err, res) => {
+        res=res[0];
         if (err) {
             responses = {
                 flag: false,

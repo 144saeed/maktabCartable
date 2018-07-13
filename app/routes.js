@@ -1,6 +1,7 @@
 const database = require('../config/dataBase.js');
 const encryptor = require('bcrypt');
 const path = require('path');
+var nodemailer = require('nodemailer');
 module.exports = function (app, passport) {
 
 
@@ -28,10 +29,10 @@ module.exports = function (app, passport) {
             switch (output.status) {
                 case 3:
                     result.emailExist = output.flag;
-                    doAnAction(0, "getRegistrationLink",req.body.email, (responses,values)=>{
-                        result.verificationEmailSent = EmailSender(req.email,values.link);
+                    database.doAnAction(0, "getRegistrationLink", req.body.email, (responses, values) => {
+                        result.verificationEmailSent = EmailSender(req.body.email, values.link);
                     });
-                    
+
                     if (result.verificationEmailSent)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
                     else
@@ -85,12 +86,12 @@ module.exports = function (app, passport) {
             failureRedirect: '/', // redirect back to the signup page if there is an error
             failureFlash: true // allow flash messages
         }));
-    app.get('/userRegistration',  (req, res) => {
-        doAnAction(0, "getRegistrationLink",req.body.email, (responses,values)=>{
-            if(!req.verificationCode==values.link)
-            res.send("لینک غیر مجاز است");
+    app.get('/userRegistration', (req, res) => {
+        database.doAnAction(0, "getRegistrationLink", req.query.email, (responses, values) => {
+            if (!req.query.verificationCode == values.link)
+                res.send("لینک غیر مجاز است");
         });
-        res.cookie.currentUserEmail=req.body.email;
+        res.cookie.currentUserEmail = req.query.email;
         res.sendFile(path.join(__dirname, '../views/register.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -131,18 +132,21 @@ module.exports = function (app, passport) {
         res.sendFile(path.join(__dirname, '../views/adminInitiatNewUser.html'));
     });
     app.post('/adminInitiatNewUser', isLoggedIn, function (req, res) {
-        console.log("adminInitiatNewUser");
-        let userInsertData={
-            "firstName":"",
-            "lastName":"",
-            "userID":"",
-            "email":"",
-            "password":"",
-            "description":"",
-            "role":"",
-            "numberId":""
+        let userInsertData = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            description: req.body.description,
+            nationalId: req.body.nationalId
         };
-        res.end();
+        database.doAnAction(1, "addUser", userInsertData, function callback(status, responses) {
+            if (status === null)
+                res.send("Succeed!");
+            else
+                res.send("Faild!");
+
+        })
+
     });
     app.get('/addPractice', isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../views/addPractice.html'));
@@ -172,7 +176,7 @@ module.exports = function (app, passport) {
     //Dahsboard ====================
     //======================================
     app.get('/dashboard', isLoggedIn, (req, res) => {
-        res.cookie('currentUserProfile',global.currentUserProfile);
+        res.cookie('currentUserProfile', global.currentUserProfile);
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -182,7 +186,7 @@ module.exports = function (app, passport) {
         })
     })
     app.post('/dashboard', isLoggedIn, (req, res) => {
-        global.currentUserProfile=req.body.rollId;
+        global.currentUserProfile = req.body.rollId;
         res.sendFile(path.join(__dirname, '../views/dashboard.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -214,8 +218,8 @@ function isLoggedIn(req, res, next) {
 }
 
 //Email Sender
-function EmailSender(receiverEmail,verificationCode) {
-    var nodemailer = require('nodemailer');
+function EmailSender(receiverEmail, verificationCode) {
+
 
     nodemailer.createTestAccount((err, account) => {
         // create reusable transporter object using the default SMTP transport
@@ -239,9 +243,9 @@ function EmailSender(receiverEmail,verificationCode) {
             to: receiverEmail, // list of receivers
             subject: 'سامانه ثبت نام', // Subject line
             text: 'برای تکمیل ثبت نام خود به آدرس زیر مزاجعه کنید', // plain text body
-            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' + 
-            'http://127.0.0.1:8080/userRegistration?verificationCode='+verificationCode+
-            '&email='+receiverEmail
+            html: '<b>برای تکمیل ثبت نام خود به آدرس زیر مراجعه کنید</b>' + '<br>' +
+                'http://127.0.0.1:8080/userRegistration?verificationCode=' + verificationCode +
+                '&email=' + receiverEmail
 
             // html body
         };

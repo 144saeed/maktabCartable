@@ -10,6 +10,7 @@
         "express-session": "",
         "morgan": "",
         "mysql": "",
+        "nodemailer": "^4.6.7",
         "nodemon": "",
         "passport": "",
         "passport-local": ""
