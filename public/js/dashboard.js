@@ -10,4 +10,7 @@ $(document).ready(function () {
         $("input").prop( "disabled", false );
         
     })
+	$("#logOut").click(function(){
+		$.get('/logOut')
+	}
 })
