@@ -32,7 +32,12 @@ function check() {
                     $.get('/')
                 }
             }
+            else {
+                $('#success').css({ 'display': 'block' })
+                $.get('/')
+            }
         })
+    
 
     }
 }
@@ -61,6 +66,6 @@ function getCookie(name) {
     }
     else {
         console.log("کوکی یافت نشد")
-        return "کوکی یافت نشد"
+        return ""
     }
 }
