@@ -16,11 +16,11 @@ function check() {
 
         $('#checkFild').css({ 'display': 'none' })
         $('#noMatch').css({ 'display': 'none' })
-
+        var sendData={ 'password': $('#password').val(), 'email': data };
         $.ajax({
             url: "/initPasswordByUser",
             type: "POST",
-            data: { 'password': $('#password').val(), 'email': data },
+            data:sendData ,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
