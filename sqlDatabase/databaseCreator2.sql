@@ -632,7 +632,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `numOfSessions`) VALUES (, 'مکتب 13', 'فرانت اند', 'تدریس طراحی وبسیایت با تمرکز بر طراحی سمت کاربر', '2018-01-01', '', );
+INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `numOfSessions`) VALUES (1, 'مکتب 13', 'فرانت اند', 'تدریس طراحی وبسیایت با تمرکز بر طراحی سمت کاربر', '2018-01-01', '', 20);
 
 COMMIT;
 
