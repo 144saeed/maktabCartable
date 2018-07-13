@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body >
 
 
     <form >
@@ -28,22 +28,22 @@
                 <div class="container">
                     <div class="row mar-t-2">
                         <h5 class="center-align green-text text-darken-4">ثبت نام اولیه</h5>
+                     
                         <div class="input-field col s12">
-                            <input id="username" type="text" class="validate" name="username" onkeypress="check(event)" onkeyup="checkMelliCode()">
-							<span id="valid-number" class="center-align text-darken-6">کد ملی وارد شده معتبر می باشد</span>
-                            <span id="invalid-number" class="center-align text-darken-4">کد ملی وارد شده نامعتبر می باشد</span>
-                            <label for="username">نام کاربری</label>
-                            <span class="helper-text" data-error="wrong" data-success="right">نام کاربری همان کد ملی می باشد</span>
-                        </div>
-                        <div class="input-field col s12">
-                            <input id="password" type="password" class="validate" name="password" disabled="true">
+                            <input id="password" type="password" class="validate" name="password" >
                             <label for="password">گذرواژه</label>
                         </div>
                         <div class="input-field col s12">
+<<<<<<< HEAD
                             <input id="repassword" type="password" class="validate" name="repassword" disabled="true" >
+=======
+                            <input id="repassword" type="password" class="validate" name="repassword"  >
+>>>>>>> master
                             <label for="repassword">تکرار گذرواژه</label>
                         </div>
-                        <button class="waves-effect waves-light btn mar-t-1" type="button" name="action" id="btn-register" disabled="true"> ثبت نام
+                        <div class="col s12"><span style="display:none ; color:red" id="noMatch">رمز عبور مطابقت ندارد</span></div>
+                        <div class="col s12"><span style="display:none ; color:red" id="checkFild">لطفا تمام فیلد ها را پر کنید</span></div>
+                        <button class="waves-effect waves-light btn mar-t-1" type="button" name="action" id="btnRegister" onclick="check()" > ثبت نام
                         </button>
                     </div>
                 </div>
