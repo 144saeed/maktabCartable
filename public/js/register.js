@@ -16,23 +16,16 @@ function check() {
 
         $('#checkFild').css({ 'display': 'none' })
         $('#noMatch').css({ 'display': 'none' })
-
-        $.ajax({
-            url: "/initPasswordByUser",
-            type: "POST",
-            data: { 'password': $('#password').val(), 'email': data },
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                if (data == 0) {
-                    $('#faild').css({ 'display': 'block' })
-                }
-                else {
-                    $('#success').css({ 'display': 'block' })
-                    $.get('/')
-                }
+        $.post("/initPasswordByUser", { 'password': $('#password').val(), 'email': data }, function (data) {
+            if (data == 0) {
+                $('#faild').css({ 'display': 'block' })
+            }
+            else {
+                $('#success').css({ 'display': 'block' })
+                $.get('/')
             }
         })
+    
 
     }
 }
@@ -61,6 +54,6 @@ function getCookie(name) {
     }
     else {
         console.log("کوکی یافت نشد")
-        return "کوکی یافت نشد"
+        return ""
     }
 }
