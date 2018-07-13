@@ -16,26 +16,30 @@
                     <input type="text" id="txtName" class="form-control col s8" />
                 </div>
 
-                <div class="select col s12">
-                    <label class="rtl right-align col s4 right"> : مسئول دوره</label>
-                    <select id="ddlSupervisor" class="browser-default col s5">
-                        <option value="html">0</option>
-                        <option value="css">1</option>
-                        <option value="js">2</option>
-                        <option value="network">3</option>
-                    </select>
+                <div class="col s12">
+                    <label for="" class="rtl right-align col s4 right"> : موضوع دوره</label>
+                    <input type="text" id="title" class="form-control col s8" />
                 </div>
+
+
 
                 <div class="col s12">
                     <label for="txtData" class="rtl right-align col s5 right"> : تاریخ شروع دوره</label>
                     <input type="date" id="txtData" class="form-control col s6" />
                 </div>
 
+                <div class="col s12">
+                    <label for="" class="rtl right-align col s4 right"> : تعداد جلسات</label>
+                    <input type="number" id="numberOfSessions" class="form-control col s8" />
+                </div>
+                <div class="col s12"><span style="display:none ; color:red" id="checkNumber">تعداد جلسات باید بیشتر از صفر باشد</span></div>
+
                 <div class="right col s12">
                     <label for="txtDescription" class="rtl right-align col s4 right"> : توضیحات</label>
                     <textarea id="txtDescription" class="form-control col s8 rtl right-align"></textarea>
                 </div>
-
+                <div class="col s12"><span style="display:none ; color:red" id="checkFild">لطفا تمام فیلد ها را پر کنید</span></div>
+                <div class="col s12"><span style="display:none ; color:lightgreen" id="success">اطلاعات با موفقیت ارسال شد</span></div>
                 <div class="col s12 button ">
                     <button type="button" id="btnSaveClass" class="waves-effect waves-light btn-small"> ذخیره تمرین </button>
                     <button type="button" id="btnCancel" class="waves-effect waves-light btn-small red"> انصراف </button>
@@ -46,17 +50,32 @@
     </form>
     <script>
         $("#btnSaveClass").click(function (event) {
-            event.preventDefault();
+            if ($('#txtName').val()=="" || $('#title').val()=="" || $('#txtData').val()=="" || $('#numberOfSessions').val() =="") {
+                $('#checkNumber').css({ 'display': 'none' })
+                $('#checkFild').css({ 'display': 'block' })
+            }
+            else if ($('#numberOfSessions').val() <= 0 ) {
+                $('#checkFild').css({ 'display': 'none' })
+                $('#checkNumber').css({ 'display': 'block' })
+            }
+            else {
+                $('#checkFild').css({ 'display': 'none' })
+                $('#checkNumber').css({ 'display': 'none' })
+                $('#success').css({ 'display': 'block' })
 
-            $.post("/addClass", {
-                'courseName': $('#txtName').val(),
-                'supervisor': $('#ddlSupervisor').val(),
-                'startDate': $('#txtData').val(),
-                'description': $('#txtDescription').val()
-            }, function (data) {
+                $.post("/addClass", {
+                    'courseName': $('#txtName').val(),
+                    'title': $('#title').val(),
+                    'startDate': $('#txtData').val(),
+                    'numberOfSessions': $('#numberOfSessions').val(),
+                    'description': $('#txtDescription').val()
+                }, function (data) {
 
-            })
-        });
+                })
+            }
+        })
+
+
     </script>
 </body>
 
