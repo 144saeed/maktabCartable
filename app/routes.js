@@ -36,7 +36,7 @@ module.exports = function (app, passport) {
                             result.verificationEmailSent = null;
                     });
 
-                    if (result.verificationEmailSent)
+                    if (result.verificationEmailSent!=null)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
                     else
                         result.message = 'مشکلی در ارسال پیش آمده لطفا دوباره تلاش کنید.';
