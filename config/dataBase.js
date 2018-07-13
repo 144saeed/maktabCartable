@@ -17,7 +17,7 @@ module.exports = {
         let sqlsttmnt = "select password,id" +
             " from user" +
             " where nationalId=?;"
-        connection.query(sqlsttmnt,[username], (err, results, fields) => {
+        connection.query(sqlsttmnt, [username], (err, results, fields) => {
             next(err, results, fields);
         });
     },
@@ -118,6 +118,23 @@ module.exports = {
             getRegistrationLink(data, next);
         } else if (action == "signupandlinkinvalidation") {
             signUpAndLinkInvalidation(data, next);
+        } else if (action == "definenewcourse") {
+            let options = {
+                permissionCheck: {
+                    id: profileId,
+                    action: 'defineUser'
+                },
+                mandatoryKeysCheck: {
+                    keys: ['title', 'subject', 'startDate', 'numOfSessions'],
+                }
+            };
+            validateOperation(options, data, (validationStatus) => {
+                if (validationStatus.flag) {
+                    addCourse(data, next);
+                } else {
+                    next(validationStatus);
+                }
+            })
         }
     },
     regenerateVerificationLink(email, next) {
@@ -278,6 +295,30 @@ let alterEmailInformtion = function (id, data, next) {
     });
 }
 
+let addCourse = function (data, next) {
+    let responses = [];
+    addRecord({
+        table:"term",
+        data
+    },responses,next(responses))
+}
+
+let addRecord = function (req, res, next) {
+    let sqlstatment = 'insert into ecartable.?? set ?';
+    connection.query(sqlstatment, [req.table, req.values],
+        (err, ans, fields) => {
+            res.push({
+                error: err,
+                results: ans,
+                fields,
+                table: req.table,
+                operation: addrecord
+            })
+            let flag = (err == undefined);
+            next(flag, res)
+        });
+}
+
 let addUser = function (id, data, next) {
     let options = {
         permissionCheck: {
@@ -345,19 +386,24 @@ let addUser = function (id, data, next) {
     })
 }
 
-let addRecord = function (req, res, next) {
-    let sqlstatment = 'insert into ecartable.?? set ?';
-    connection.query(sqlstatment, [req.table, req.values],
-        (err, ans, fields) => {
-            res.push({
-                error: err,
-                results: ans,
-                fields,
-                table: req.table
-            })
-            let flag = (err == undefined);
-            next(flag, res)
-        });
+let alterRecord = function (req, res, next) {
+    let sqlstatment = "update ??" +
+        " set ?" +
+        " where" + request.conditions;
+    connection.query(sqlstatment, [req.table, req.values], (error, results) => {
+        res_ = {
+            error,
+            results,
+            table: req.table,
+            operation: "alterRecord",
+            flag: true
+        }
+        if (error) {
+            res_.flag = false;
+        }
+        res.push(res_);
+        next(res);
+    })
 }
 
 let checkForMandatoryKeys = function (keys, data, output, next) {
