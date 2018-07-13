@@ -102,6 +102,21 @@ module.exports = function (app, passport) {
             }
         })
     })
+    app.post('/initPasswordByUser', isLoggedIn, function (req, res) {
+        let userInitPasswordData = {
+            password: req.body.password,
+            email: req.body.email,
+
+        };
+        database.doAnAction(1, "addUser", userInitPasswordData, function callback(status, responses) {
+            if (status === null)
+                res.send("Succeed!");
+            else
+                res.send("Faild!");
+
+        })
+
+    });
     // =====================================
     // User Data Interaction ==============================
     // =====================================
