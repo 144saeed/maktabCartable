@@ -16,8 +16,8 @@ module.exports = {
     checkForUserPassword(username, next) {
         let sqlsttmnt = "select password,id" +
             " from user" +
-            " where nationalId=" + username + ";"
-        connection.query(sqlsttmnt, (err, results, fields) => {
+            " where nationalId=?;"
+        connection.query(sqlsttmnt,[username], (err, results, fields) => {
             next(err, results, fields);
         });
     },
