@@ -11,6 +11,6 @@ $(document).ready(function () {
         
     })
 	$("#logOut").click(function(){
-		$.get('/logOut')
+		$.get( "/logOut", function( data ) {}
 	}
 })
