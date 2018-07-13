@@ -17,7 +17,7 @@ function check() {
         $('#checkFild').css({ 'display': 'none' })
         $('#noMatch').css({ 'display': 'none' })
 
-        $.post("/initiatNewUser", { 'password': $('#password').val()  , 'email':data }, function (data) {
+        $.post("/initPasswordByUser", { 'password': $('#password').val()  , 'email':data }, function (data) {
 
         })
     }
