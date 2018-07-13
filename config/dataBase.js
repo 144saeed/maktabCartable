@@ -316,7 +316,7 @@ let addRecord = function (req, res, next) {
                 results: ans,
                 fields,
                 table: req.table,
-                operation: addrecord
+                operation: "addrecord"
             })
             let flag = (err == undefined);
             next(flag, res)
@@ -498,7 +498,7 @@ let linkInvalidator = function (email, output, next) {
         " where emailInfo.email=?";
     connection.query(sqlstatment, [email], (error, results) => {
         output.push({
-            flag: (err == null),
+            flag: (error == null),
             error,
             results
         })
