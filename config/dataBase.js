@@ -116,6 +116,8 @@ module.exports = {
             addUser(profileId, data, next)
         } else if (action == "getregistrationlink") {
             getRegistrationLink(data, next);
+        } else if (action == "signupandlinkinvalidation") {
+            signUpAndLinkInvalidation(data, next);
         }
     },
     regenerateVerificationLink(email, next) {
@@ -377,29 +379,33 @@ let checkForMandatoryKeys = function (keys, data, output, next) {
 }
 
 let checKforPermissioin = function (id, action, output, next) {
-    let sqlstatment = "select count(*) as 'count'" +
-        " from profiles" +
-        " inner join rolls" +
-        " on profiles.rolls_id = rolls.rolls_id" +
-        " inner join rolls_has_procedures" +
-        " on rolls_has_procedures.rolls_id = profiles.rolls_id" +
-        " inner join procedures" +
-        " on procedures.procedures_id = rolls_has_procedures.procedures_id" +
-        " where profiles_id = ?" +
-        " and procedures_title=?;";
-    connection.query(sqlstatment, [id, action],
-        (err, ans) => {
-            let permissionCheck = {
-                error: err,
-                results: ans,
-                flag: false
-            };
-            if (ans[0].count == 1) {
-                permissionCheck.flag = true;
-            }
-            output.permissionCheck = permissionCheck;
-            next(output);
-        })
+    if (id == null) {
+        next(output);
+    } else {
+        let sqlstatment = "select count(*) as 'count'" +
+            " from profiles" +
+            " inner join rolls" +
+            " on profiles.rolls_id = rolls.rolls_id" +
+            " inner join rolls_has_procedures" +
+            " on rolls_has_procedures.rolls_id = profiles.rolls_id" +
+            " inner join procedures" +
+            " on procedures.procedures_id = rolls_has_procedures.procedures_id" +
+            " where profiles_id = ?" +
+            " and procedures_title=?;";
+        connection.query(sqlstatment, [id, action],
+            (err, ans) => {
+                let permissionCheck = {
+                    error: err,
+                    results: ans,
+                    flag: false
+                };
+                if (ans[0].count == 1) {
+                    permissionCheck.flag = true;
+                }
+                output.permissionCheck = permissionCheck;
+                next(output);
+            })
+    }
 }
 
 let generateSignUpLink = function (id, next) {
@@ -416,7 +422,7 @@ let getRegistrationLink = function (email, next) {
         " on verificationLinks.emailInfo_id = emailInfo.id" +
         " where emailInfo.email=?";
     connection.query(sqlstatment, email, (err, res) => {
-        res=res[0];
+        res = res[0];
         if (err) {
             responses = {
                 flag: false,
@@ -435,6 +441,20 @@ let getRegistrationLink = function (email, next) {
     });
 }
 
+let linkInvalidator = function (email, output, next) {
+    let sqlstatment = "update verificationLinks" +
+        " inner join emailInfo" +
+        " on emailInfo.id = verificationLinks.emailInfo_id" +
+        " set isVerified=true" +
+        " where emailInfo.email=?";
+    connection.query(sqlstatment, [email], (error, results) => {
+        output.push({
+            error,
+            results
+        })
+        next(output);
+    })
+}
 
 let removeRecord = function (table, id, next) {
     let sqlstatment = "delete from ?? where id=?";
@@ -452,6 +472,46 @@ let reverseTheAddChain = function (responses, next) {
         removeRecord(responses[i].table, responses[i].results.insertId);
     }
     next();
+}
+
+let signup = function (email, password, output, next) {
+    let sqlstatment = "update user" +
+        " inner join emailInfo" +
+        " on emailInfo.user_id=user.id" +
+        " set password=?" +
+        " where emailInfo.email=?";
+    connection.query(sqlstatment, [password, email], (err, res) => {
+        output.push({
+            error: err,
+            results: res
+        })
+        next(output);
+    });
+}
+
+let signUpAndLinkInvalidation = function (data, next) {
+    let options = {
+        permissionCheck: {
+            id: null,
+            action: 'signup'
+        },
+        mandatoryKeysCheck: {
+            keys: ['password', 'email'],
+        }
+    };
+    let responses = [];
+    validateOperation(options, data, (status) => {
+        if (status.flag) {
+            responses.push(status);
+            signup(data.email, data.password, responses, (responses) => {
+                linkInvalidator(data.email, responses, (responses) => {
+                    next(responses);
+                })
+            })
+        } else {
+            next(status)
+        }
+    })
 }
 
 let validateOperation = function (options, data, next) {
