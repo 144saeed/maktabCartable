@@ -94,7 +94,7 @@ module.exports = function (app, passport) {
             if (!req.query.verificationCode == values.link)
                 res.send("لینک غیر مجاز است");
         });
-        res.cookie.currentUserEmail = req.query.email;
+        res.cookie("currentUserEmail",req.query.email);
         res.sendFile(path.join(__dirname, '../views/register.html'), {
             message: req.flash('loginMessage'),
             function (err) {
