@@ -116,6 +116,25 @@ module.exports = {
         action = action.toLowerCase();
         if (action == "adduser") {
             addUser(profileId, data, next)
+        } else if (action == "addmultipleusers") {
+            let options = {
+                permissionCheck: {
+                    id: profileId,
+                    action: 'defineUser'
+                },
+                mandatoryKeysCheck: {
+                    keys: ['nationalId', 'email'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    addMultipleUsers(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
         } else if (action == "getregistrationlink") {
             getRegistrationLink(data, next);
         } else if (action == "signupandlinkinvalidation") {
@@ -136,9 +155,11 @@ module.exports = {
                     responses.push(status)
                     addCourse(responses, data, next);
                 } else {
-                    next(false,[status])
+                    next(false, [status])
                 }
             });
+        } else if (action == "addstudentstoterm") {
+            next("test");
         }
     },
     regenerateVerificationLink(email, next) {
@@ -305,6 +326,69 @@ let addCourse = function (responses, values, next) {
     }, responses, next)
 }
 
+let addMultipleRecords = function (req, res, next) {
+    let sqlstatment = 'insert into ecartable.?? (??) values ?';
+    connection.query(sqlstatment, [req.table, req.keys, req.values],
+        (err, ans, fields) => {
+            res.push({
+                error: err,
+                results: ans,
+                fields,
+                table: req.table,
+                operation: "addrecord"
+            })
+            let flag = (err == undefined) && res.flag;
+            next(flag, res)
+        });
+}
+
+let addMultipleUsers = function (responses, data, next) {
+    if (data.nationalId.length != data.email.length) {
+        responses.push({
+            error: 'email and national IDs are not paired',
+            flag: false
+        })
+        next(getResponsesFlag(responses), responses);
+    } else {
+        let emailData = {
+            email: data.email
+        };
+        delete data.email;
+        data = fullFillData(data, data.nationalId.length, [{
+                key: 'firstName',
+                default: ''
+            },
+            {
+                key: 'lastName',
+                default: ''
+            }, {
+                key: 'fathersName',
+                default: ''
+            }, {
+                key: 'personalPic',
+                default: ''
+            }, {
+                key: 'description',
+                default: ''
+            }, {
+                key: 'birthDate',
+                default: null
+            }
+        ]);
+        console.log(data)
+        data = object2array(data);
+        let keys = data.keys;
+        data = data.array;
+        addMultipleRecords({
+            table: 'user',
+            values: data,
+            keys
+        }, responses, (flag, responses) => {
+            next(flag, responses);
+        })
+    }
+}
+
 let addRecord = function (req, res, next) {
     let sqlstatment = 'insert into ecartable.?? set ?';
     connection.query(sqlstatment, [req.table, req.values],
@@ -317,7 +401,6 @@ let addRecord = function (req, res, next) {
                 operation: "addrecord"
             })
             let flag = (err == undefined);
-            console.log(next)
             next(flag, res)
         });
 }
@@ -502,6 +585,29 @@ let getRegistrationLink = function (email, next) {
     });
 }
 
+let getResponsesFlag = function (responses) {
+    let flag = true;
+    responses.forEach(element => {
+        flag = flag && element.status;
+    });
+    return flag;
+}
+
+let fullFillData = function (data, dim, keys) {
+    let counter1 = 0;
+    keys.forEach(element => {
+        if (!data.hasOwnProperty(element.key)) {
+            data[element.key] = Array(dim).fill(element.default);
+        }
+        if (data[element.key].length < dim) {
+            data[element.key].concat(new Array(dim - data[element.key].length).fill(element.default));
+        } else if (data[element.key].length > dim) {
+            data[element.key].splice(dim + 1, data[element.key].length - dim);
+        }
+    });
+    return data;
+}
+
 let linkInvalidator = function (email, output, next) {
     let sqlstatment = "update verificationLinks" +
         " inner join emailInfo" +
@@ -517,6 +623,25 @@ let linkInvalidator = function (email, output, next) {
         })
         next(output);
     })
+}
+
+let object2array = function (object) {
+    array = [];
+    let keys = Object.keys(object);
+    let kl = keys.length; //keys length
+    let al = object[keys[0]].length; //array length
+    for (let i = 0; i < al; i++) {
+        let element = [];
+        for (let j = 0; j < kl; j++) {
+            let val = object[keys[j]][i];
+            element.push(val);
+        }
+        array.push(element);
+    }
+    return {
+        array,
+        keys
+    };
 }
 
 let removeRecord = function (table, id, next) {

@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `ecartable`.`user` (
   `fathersName` VARCHAR(45) NULL,
   `personalPic` VARCHAR(45) NULL,
   `description` LONGTEXT NULL,
+  `birthDate` DATE NULL,
   PRIMARY KEY (`id`, `nationalId`),
   UNIQUE INDEX `nationalId_UNIQUE` (`nationalId` ASC))
 ENGINE = InnoDB;
@@ -582,7 +583,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`user` (`id`, `nationalId`, `password`, `firstName`, `lastName`, `fathersName`, `personalPic`, `description`) VALUES (1, 'admin', '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'ادمین', 'سایت', 'پدر ادمین', '', 'ادمین سایت');
+INSERT INTO `ecartable`.`user` (`id`, `nationalId`, `password`, `firstName`, `lastName`, `fathersName`, `personalPic`, `description`, `birthDate`) VALUES (1, 'admin', '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'ادمین', 'سایت', 'پدر ادمین', '', 'ادمین سایت', NULL);
 
 COMMIT;
 
@@ -635,6 +636,7 @@ START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (1, 'defineUser', 'define a new user in portal');
 INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (2, 'defineCourse', 'define a new course in portal');
+INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (3, 'defineProfile', 'define a new profile');
 
 COMMIT;
 
