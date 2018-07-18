@@ -205,8 +205,10 @@ CREATE TABLE IF NOT EXISTS `ecartable`.`term` (
   `description` LONGTEXT NULL,
   `startDate` DATE NULL,
   `endDate` DATE NULL,
-  `duration` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
+  `numOfSessions` INT NULL,
+  `code` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`, `code`),
+  UNIQUE INDEX `code_UNIQUE` (`code` ASC))
 ENGINE = InnoDB;
 
 
@@ -642,7 +644,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `duration`) VALUES (1, 'مکتب 13', 'فرانت اند', 'تدریس طراحی وبسیایت با تمرکز بر طراحی سمت کاربر', '2018-01-01', NULL, NULL);
+INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `numOfSessions`, `code`) VALUES (1, 'all', 'all', 'all', '2001-01-01', NULL, NULL, 'm0');
 
 COMMIT;
 
