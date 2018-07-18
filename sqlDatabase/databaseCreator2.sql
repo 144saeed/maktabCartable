@@ -202,10 +202,10 @@ CREATE TABLE IF NOT EXISTS `ecartable`.`term` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NULL,
   `subject` VARCHAR(45) NULL,
-  `description` VARCHAR(45) NULL,
+  `description` LONGTEXT NULL,
   `startDate` DATE NULL,
   `endDate` DATE NULL,
-  `numOfSessions` INT NULL,
+  `duration` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -580,7 +580,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`user` (`id`, `nationalId`, `password`, `firstName`, `lastName`, `fathersName`, `personalPic`, `description`) VALUES (1, 'admin', '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'ادمین', 'سایت', '', '', 'ادمین سایت');
+INSERT INTO `ecartable`.`user` (`id`, `nationalId`, `password`, `firstName`, `lastName`, `fathersName`, `personalPic`, `description`) VALUES (1, 'admin', '$2b$12$ZT0jewNln3zQzLNDOjD/X.SWXZoDQxmF3p2SfRo./y8SqxtMhIeYK', 'ادمین', 'سایت', 'پدر ادمین', '', 'ادمین سایت');
 
 COMMIT;
 
@@ -590,7 +590,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`callInfo` (`id`, `user_id`, `title`, `number`) VALUES (1, 1, 'mobile', '0936936936');
+INSERT INTO `ecartable`.`callInfo` (`id`, `user_id`, `title`, `number`) VALUES (1, 1, 'mobile', '09363636256');
 
 COMMIT;
 
@@ -601,6 +601,16 @@ COMMIT;
 START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`emailInfo` (`id`, `user_id`, `email`, `isMainEmail`, `isVerified`) VALUES (1, 1, 'oveisi.saeed@gmail.com', true, true);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `ecartable`.`eduResume`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `ecartable`;
+INSERT INTO `ecartable`.`eduResume` (`id`, `user_id`, `level`, `institute`, `grade`, `startDate`, `endDate`) VALUES (1, 1, 'PHD', 'AUT', '18', '2006-01-03', '2010-01-03');
 
 COMMIT;
 
@@ -632,7 +642,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `ecartable`;
-INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `numOfSessions`) VALUES (1, 'مکتب 13', 'فرانت اند', 'تدریس طراحی وبسیایت با تمرکز بر طراحی سمت کاربر', '2018-01-01', '', 20);
+INSERT INTO `ecartable`.`term` (`id`, `title`, `subject`, `description`, `startDate`, `endDate`, `duration`) VALUES (1, 'مکتب 13', 'فرانت اند', 'تدریس طراحی وبسیایت با تمرکز بر طراحی سمت کاربر', '2018-01-01', NULL, NULL);
 
 COMMIT;
 
