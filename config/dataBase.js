@@ -124,13 +124,21 @@ module.exports = {
             let options = {
                 permissionCheck: {
                     id: profileId,
-                    action: 'defineUser'
+                    action: 'defineCourse'
                 },
                 mandatoryKeysCheck: {
-                    keys: ['title', 'subject', 'startDate', 'numOfSessions'],
+                    keys: ['title', 'subject', 'startDate', 'numOfSessions', "code"],
                 }
             };
-            validateOperation(options,data,addCourse(data));
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status)
+                    addCourse(responses, data, next);
+                } else {
+                    next(false,[status])
+                }
+            });
         }
     },
     regenerateVerificationLink(email, next) {
@@ -290,12 +298,11 @@ let alterEmailInformtion = function (id, data, next) {
     });
 }
 
-let addCourse = function (data, next) {
-    let responses = [];
+let addCourse = function (responses, values, next) {
     addRecord({
         table: "term",
-        data
-    }, responses, next(responses))
+        values
+    }, responses, next)
 }
 
 let addRecord = function (req, res, next) {
@@ -310,6 +317,7 @@ let addRecord = function (req, res, next) {
                 operation: "addrecord"
             })
             let flag = (err == undefined);
+            console.log(next)
             next(flag, res)
         });
 }

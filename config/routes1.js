@@ -5,7 +5,7 @@ module.exports = function (app) {
 
 
     app.get('/test', function (req, res) {
-        // res.send('salam');
+        //res.send('salam');
 
 
         /*============================================
@@ -96,6 +96,32 @@ module.exports = function (app) {
             // responses: detail Information about proccess
             // password must be provided
             // email must be provided
+            res.send({
+                responses,
+                status
+            });
+        })
+        /**/
+
+
+
+
+        /**/
+        /*============================================
+        // admin adds new course
+        ==============================================*/
+        /**/
+        database.doAnAction(1, "definenewcourse", {
+            //title: "مکتب 13",
+            subject: "فرانت اند",
+            startDate: "2018-10-10",
+            numOfSessions: 20,
+            code: "m14"
+        }, (status, responses) => {
+            // status: true if everything is ok
+            // responses: detail Information about proccess
+            // title, subject,startDate,numOfSessions and code must be provided
+            // status: true if everything is ok
             res.send({
                 responses,
                 status
