@@ -45,7 +45,6 @@ module.exports = {
             res.perofessionalResume = results[1];
             res.educationalResume = results[2];
             res.profilesData = results[3];
-            console.log(res.profilesData)
             next(err, res, fields);
         });
     },
@@ -131,16 +130,9 @@ module.exports = {
                     keys: ['title', 'subject', 'startDate', 'numOfSessions'],
                 }
             };
-            validateOperation(options, data, (validationStatus) => {
-                if (validationStatus.flag) {
-                    addCourse(data, next);
-                } else {
-                    next(validationStatus);
-                }
-            })
+            validateOperation(options,data,addCourse(data));
         }
     },
-    getUserData(profileId, requiredData) {},
     regenerateVerificationLink(email, next) {
         let responses = [];
         let sqlstatment = "select emailInfo.*, verificationLinks.*, user.*, verificationLinks.id as linkId" +
@@ -193,7 +185,6 @@ module.exports = {
             " and verificationLinks.link=?";
         connection.query(sqlstatment, [nationalId, link],
             (err, res) => {
-                console.log(err);
                 if (err) {
                     responses.push({
                         error: "wrong national Id. or email address"
@@ -476,16 +467,29 @@ let getRegistrationLink = function (email, next) {
             responses = {
                 flag: false,
                 error: err,
+                status: 0
             }
             next(responses);
         } else if (res.length == 0) {
             responses = {
                 flag: false,
                 error: "email address did not found",
+                status: 1
+            }
+            next(responses);
+        } else if (res[0].isVerified) {
+            responses = {
+                flag: false,
+                error: "email is verified before",
+                status: 2
             }
             next(responses);
         } else {
-            next(null, res)
+            next({
+                flag: true,
+                status: 3,
+                error: ''
+            }, res[0].link);
         }
     });
 }
@@ -498,9 +502,10 @@ let linkInvalidator = function (email, output, next) {
         " where emailInfo.email=?";
     connection.query(sqlstatment, [email], (error, results) => {
         output.push({
-            flag: (error == null),
+            flag: ((error == null) && (results.affectedRows == 1)),
             error,
-            results
+            results,
+            message: (results.affectedRows == 1 ? 'ok' : 'no such an email exists')
         })
         next(output);
     })
@@ -533,9 +538,10 @@ let signup = function (email, password, output, next) {
     password = hasher.hash(password, 10, (err, ans) => {
         connection.query(sqlstatment, [ans, email], (err, res) => {
             output.push({
-                flag: (err == null),
+                flag: ((err == null) && (res.affectedRows == 1)),
                 error: err,
-                results: res
+                results: res,
+                message: (res.affectedRows == 1 ? 'ok' : 'no such an email exists')
             })
             next(output);
         });
@@ -566,7 +572,7 @@ let signUpAndLinkInvalidation = function (data, next) {
                 })
             })
         } else {
-            next(false, status)
+            next(status)
         }
     })
 }
