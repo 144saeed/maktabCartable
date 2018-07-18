@@ -67,7 +67,7 @@ module.exports = function (app) {
         /*============================================
         // admin adds multiple users
         ==============================================*/
-        /**/
+        /**1/
         database.doAnAction(1, "addMultipleUsers", {
             nationalId: ['1', '2', '3', '4', '5', '6'],//mandatory
             email: ['e1@e.c', 'e2@e.c', 'e3@e.c', 'e4@e.c', 'e5@e.c', 'e6@e.c'], //mandatory,must have the same length asnationalId
@@ -86,11 +86,31 @@ module.exports = function (app) {
             });
         })
         /**/
+        /**/
+        database.doAnAction(1, "addMultipleUsers", {
+            nationalId: ['7', '8'],//mandatory
+            email: ['e7@e.c', 'e8@e.c'], //mandatory,must have the same length asnationalId
+            firstName: ['saeed'], // automatically will be converted to ['saeed',[],[],[],[],[],[]]
+            lastName: ['oveisi','1','1','1','1','1','1','1','1']//automatically drops exceeding ones
+            //other fileds will automatically be added
+        }, (flag, responses) => {
+            // status.flag: false if there is error
+            // status: udefined if everything is ok
+            // profile Id must be pointing to an admin user.other wise it produces an error
+            // national id must be uniq. other wise it returns an error
+            // email and national idmust be provided. otherwise it produces an error
+            res.send({
+                flag,
+                responses
+            });
+        })
+        /**/
 
-        // let array = ['a', 'b'];
-        // let elements = [0, 1, 2];
-        // array.push.apply(array, elements);
-        // res.send(Array(100).fill('saeed'));
+        // let a = new Array(5).fill(1).map((x, i) => {
+        //     console.log(i);
+        //     return i + 3
+        // });
+        // res.send(a);
 
 
 

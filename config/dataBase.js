@@ -326,19 +326,50 @@ let addCourse = function (responses, values, next) {
     }, responses, next)
 }
 
+let addMultipleEmails = function (responses, data, next) {
+    data = fullFillData(data, data.email.length, [{
+            key: 'isMainEmail',
+            default: true
+        },
+        {
+            key: 'isVerified',
+            default: false
+        }
+    ]);
+    data = object2array(data);
+    let keys = data.keys;
+    data = data.array;
+    addMultipleRecords({
+        table: 'emailInfo',
+        values: data,
+        keys
+    }, responses, (responses) => {
+        let flag = responses[responses.length - 1].flag;
+        if (!flag) {
+            flag = getResponsesFlag(responses);
+            reverseTheBulkAddChain(responses, () => {
+                next(flag, responses);
+            })
+        } else {
+            flag = getResponsesFlag(responses);
+            next(flag, responses);
+        }
+    })
+}
+
 let addMultipleRecords = function (req, res, next) {
     let sqlstatment = 'insert into ecartable.?? (??) values ?';
     connection.query(sqlstatment, [req.table, req.keys, req.values],
         (err, ans, fields) => {
             res.push({
+                flag: (err == undefined),
                 error: err,
                 results: ans,
                 fields,
                 table: req.table,
                 operation: "addrecord"
             })
-            let flag = (err == undefined) && res.flag;
-            next(flag, res)
+            next(res)
         });
 }
 
@@ -375,7 +406,6 @@ let addMultipleUsers = function (responses, data, next) {
                 default: null
             }
         ]);
-        console.log(data)
         data = object2array(data);
         let keys = data.keys;
         data = data.array;
@@ -383,8 +413,15 @@ let addMultipleUsers = function (responses, data, next) {
             table: 'user',
             values: data,
             keys
-        }, responses, (flag, responses) => {
-            next(flag, responses);
+        }, responses, (responses) => {
+            if (responses[responses.length - 1].flag) {
+                let startId = responses[responses.length - 1].results.insertId;
+                let numOfIds = responses[responses.length - 1].results.affectedRows;
+                emailData.user_id = new Array(numOfIds).fill(0).map((x, i) => i + startId);
+                addMultipleEmails(responses, emailData, next);
+            } else {
+                next(flag, responses);
+            }
         })
     }
 }
@@ -659,6 +696,22 @@ let reverseTheAddChain = function (responses, next) {
     for (let i = 0; i < responses.length - 1; i++) {
         removeRecord(responses[i].table, responses[i].results.insertId);
     }
+    next();
+}
+
+let reverseTheBulkAddChain = function (responses, next) {
+    responses.forEach(element => {
+        if (element.hasOwnProperty('results')) {
+            let results = element.results;
+            if (results != undefined) {
+                if (results.hasOwnProperty('affectedRows')) {
+                    for (let id = 0; id < results.affectedRows; id++) {
+                        removeRecord(element.table, id+results.insertId);
+                    }
+                }
+            }
+        }
+    });
     next();
 }
 
