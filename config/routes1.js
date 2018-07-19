@@ -161,11 +161,11 @@ module.exports = function (app) {
         ==============================================*/
         /**1/
         database.doAnAction(1, "definenewcourse", {
-            title: "مکتب 13",
+            title: "مکتب 14",
             subject: "فرانت اند",
             startDate: "2018-10-10",
             numOfSessions: 20,
-            code: "m1",
+            code: "m14",
         }, (status, responses) => {
             // status: true if everything is ok
             // responses: detail Information about proccess
@@ -187,7 +187,7 @@ module.exports = function (app) {
         /**1/
         database.doAnAction(1, "addsupervisortoterm", {
             user_id: 2,//mandatory
-            term_id: 1
+            term_id: 2
         }, (flag, responses) => {
             // status.flag: false if there is error
             // status: udefined if everything is ok
@@ -208,9 +208,9 @@ module.exports = function (app) {
         // admin or supervisor adds teachers to specific term
         ==============================================*/
         /**1/
-        database.doAnAction(3, "addTeacherToTerm", {
-            user_id: [1],//mandatory
-            term_id: [2]
+        database.doAnAction(1, "addTeacherToTerm", {
+            user_id: [4,5],//mandatory
+            term_id: [3]
         }, (flag, responses) => {
             // status.flag: false if there is error
             // status: udefined if everything is ok
@@ -231,9 +231,9 @@ module.exports = function (app) {
         // admin or supervisor adds students to specific term
         ==============================================*/
         /**1/
-        database.doAnAction(2, "addStudentsToTerm", {
-            user_id: [4,5,6],//mandatory
-            term_id: [2]
+        database.doAnAction(1, "addStudentsToTerm", {
+            user_id: [6,7,8],//mandatory
+            term_id: [3]
         }, (flag, responses) => {
             // status.flag: false if there is error
             // status: udefined if everything is ok
@@ -244,6 +244,19 @@ module.exports = function (app) {
                 flag,
                 responses
             });
+        })
+        /**/
+
+
+
+        /**/
+        /*============================================
+        // requiering self information
+        ==============================================*/
+        /**/
+        database.getInformation(5, 'selfPersonalinformation', [], (responses, data) => {
+            // res.send(responses)
+            res.send(data)
         })
         /**/
 

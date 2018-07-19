@@ -639,7 +639,7 @@ INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `proc
 INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (2, 'defineCourse', 'define a new course in portal');
 INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (3, 'defineSupervisor', 'define new supervisor for the term');
 INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (4, 'defineTeacher', 'define new teacher for the term');
-INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (DEFAULT, 'defineStudents', 'define new students for term');
+INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (5, 'defineStudents', 'define new students for term');
 
 COMMIT;
 

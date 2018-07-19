@@ -197,7 +197,7 @@ module.exports = {
                     next(false, [status])
                 }
             })
-        }else if (action == "addstudentstoterm") {
+        } else if (action == "addstudentstoterm") {
             let options = {
                 permissionCheck: {
                     id: profileId,
@@ -217,6 +217,72 @@ module.exports = {
                     next(false, [status])
                 }
             })
+        }
+    },
+    getInformation(profileId, type, filters, next) {
+        type = type.toLowerCase();
+        if (type == 'selfpersonalinformation') {
+            responses = [];
+            let sqlstatment = "select id from user" +
+                " inner join profiles on profiles.user_id = user.id" +
+                " where profiles.profiles_id=?"
+            connection.query(sqlstatment, [profileId], (error, ans, fields) => {
+                responses.push({
+                    error,
+                    fields
+                })
+                if (error) {
+                    next(responses, null)
+                } else if (ans) {
+                    let userId = ans[0].id;
+                    sqlstatment = "select ecartable.profiles.*," +
+                        " ecartable.term.*,ecartable.rolls.*" +
+                        " from profiles" +
+                        " inner join ecartable.rolls on rolls.rolls_id=profiles.rolls_id" +
+                        " inner join ecartable.term on profiles.term_id=term.id" +
+                        " inner join ecartable.user on profiles.user_id=user.id" +
+                        " where user.id=?;" +
+                        " select * from user where user.id=?;"+
+                        " select * from callInfo"+
+                        " where callInfo.user_id=?;"+
+                        " select * from emailInfo"+
+                        " where emailInfo.user_id=?;"+
+                        " select * from addressInfo"+
+                        " where addressInfo.user_id=?;"+
+                        " select * from proResume"+
+                        " where proResume.user_id=?;"+
+                        " select * from eduResume"+
+                        " where eduResume.user_id=?;";
+                    connection.query(sqlstatment, [userId, userId, userId, userId, userId, userId, userId],
+                        (error, ans, fields) => {
+                            responses.push({
+                                error,
+                                fields
+                            })
+                            if (error) {
+                                next(responses, null)
+                            } else if (ans == undefined) {
+                                next([{
+                                    error: 'no profiles found'
+                                }], null)
+                            } else {
+                                next(responses, {
+                                    profileInformation: ans[0],
+                                    personalInformation: ans[1],
+                                    callInformation: ans[2],
+                                    emailInformation: ans[3],
+                                    addressInformation: ans[4],
+                                    perofessionalResume: ans[5],
+                                    educationalResume: ans[6]
+                                })
+                            }
+                        })
+                } else {
+                    next([{
+                        error: "no users found"
+                    }], null)
+                }
+            });
         }
     },
     regenerateVerificationLink(email, next) {
@@ -511,7 +577,7 @@ let addStudent = function (responses, data, next) {
         delete data.profileId;
         sqlstatment = "select * from profiles where profiles_id = ?";
         connection.query(sqlstatment, [profileId], (err, ans, fs) => {
-            if (ans[0].rolls_id == 2, ans[0].term_id != data.term_id) {
+            if (ans[0].rolls_id == 2 && ans[0].term_id != data.term_id) {
                 responses.push({
                     error: 'the term is not accessible to the supervisor',
                     flag: false
@@ -574,7 +640,7 @@ let addTeacher = function (responses, data, next) {
         delete data.profileId;
         sqlstatment = "select * from profiles where profiles_id = ?";
         connection.query(sqlstatment, [profileId], (err, ans, fs) => {
-            if (ans[0].rolls_id == 2, ans[0].term_id != data.term_id) {
+            if (ans[0].rolls_id == 2 && ans[0].term_id != data.term_id) {
                 responses.push({
                     error: 'the term is not accessible to the supervisor',
                     flag: false
