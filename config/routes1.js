@@ -86,7 +86,7 @@ module.exports = function (app) {
             });
         })
         /**/
-        /**/
+        /**1/
         database.doAnAction(1, "addMultipleUsers", {
             nationalId: ['7', '8'],//mandatory
             email: ['e7@e.c', 'e8@e.c'], //mandatory,must have the same length asnationalId
@@ -160,12 +160,12 @@ module.exports = function (app) {
         // admin adds new course
         ==============================================*/
         /**1/
-        database.doAnAction(2, "definenewcourse", {
+        database.doAnAction(1, "definenewcourse", {
             title: "مکتب 13",
             subject: "فرانت اند",
             startDate: "2018-10-10",
             numOfSessions: 20,
-            code: "m14",
+            code: "m1",
         }, (status, responses) => {
             // status: true if everything is ok
             // responses: detail Information about proccess
@@ -179,22 +179,70 @@ module.exports = function (app) {
         /**/
 
 
+
         /**/
         /*============================================
-        admin or supervisor
-        pass users to term(defining profile)
+        // admin adds supervisor to specific term
         ==============================================*/
         /**1/
-        database.doAnAction(1, "passUsersToTerm", {
-            studentIds:[]
-        }, (status, responses) => {
-            // status: true if everything is ok
-            // responses: detail Information about proccess
-            // title, subject,startDate,numOfSessions and code must be provided
-            // status: true if everything is ok
+        database.doAnAction(1, "addsupervisortoterm", {
+            user_id: 2,//mandatory
+            term_id: 1
+        }, (flag, responses) => {
+            // status.flag: false if there is error
+            // status: udefined if everything is ok
+            // profile Id must be pointing to an admin user.other wise it produces an error
+            // national id must be uniq. other wise it returns an error
+            // email and national idmust be provided. otherwise it produces an error
             res.send({
-                responses,
-                status
+                flag,
+                responses
+            });
+        })
+        /**/
+
+
+
+        /**/
+        /*============================================
+        // admin or supervisor adds teachers to specific term
+        ==============================================*/
+        /**1/
+        database.doAnAction(3, "addTeacherToTerm", {
+            user_id: [1],//mandatory
+            term_id: [2]
+        }, (flag, responses) => {
+            // status.flag: false if there is error
+            // status: udefined if everything is ok
+            // profile Id must be pointing to an admin user.other wise it produces an error
+            // national id must be uniq. other wise it returns an error
+            // email and national idmust be provided. otherwise it produces an error
+            res.send({
+                flag,
+                responses
+            });
+        })
+        /**/
+
+
+
+        /**/
+        /*============================================
+        // admin or supervisor adds students to specific term
+        ==============================================*/
+        /**1/
+        database.doAnAction(2, "addStudentsToTerm", {
+            user_id: [4,5,6],//mandatory
+            term_id: [2]
+        }, (flag, responses) => {
+            // status.flag: false if there is error
+            // status: udefined if everything is ok
+            // profile Id must be pointing to an admin user.other wise it produces an error
+            // national id must be uniq. other wise it returns an error
+            // email and national idmust be provided. otherwise it produces an error
+            res.send({
+                flag,
+                responses
             });
         })
         /**/

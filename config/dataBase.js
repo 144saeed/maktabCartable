@@ -158,8 +158,65 @@ module.exports = {
                     next(false, [status])
                 }
             });
-        } else if (action == "addstudentstoterm") {
-            next("test");
+        } else if (action == "addsupervisortoterm") {
+            let options = {
+                permissionCheck: {
+                    id: profileId,
+                    action: 'defineSupervisor'
+                },
+                mandatoryKeysCheck: {
+                    keys: ['user_id', 'term_id'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    addSupervisor(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
+        } else if (action == "addteachertoterm") {
+            let options = {
+                permissionCheck: {
+                    id: profileId,
+                    action: 'defineTeacher'
+                },
+                mandatoryKeysCheck: {
+                    keys: ['user_id', 'term_id'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    data.profileId = profileId;
+                    addTeacher(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
+        }else if (action == "addstudentstoterm") {
+            let options = {
+                permissionCheck: {
+                    id: profileId,
+                    action: 'defineStudents'
+                },
+                mandatoryKeysCheck: {
+                    keys: ['user_id', 'term_id'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    data.profileId = profileId;
+                    addStudent(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
         }
     },
     regenerateVerificationLink(email, next) {
@@ -442,6 +499,116 @@ let addRecord = function (req, res, next) {
         });
 }
 
+let addStudent = function (responses, data, next) {
+    if (data.user_id.length != data.term_id.length && data.term_id.length != 1) {
+        responses.push({
+            error: 'users and terms are not paired',
+            flag: false
+        })
+        next(false, responses);
+    } else {
+        let profileId = data.profileId;
+        delete data.profileId;
+        sqlstatment = "select * from profiles where profiles_id = ?";
+        connection.query(sqlstatment, [profileId], (err, ans, fs) => {
+            if (ans[0].rolls_id == 2, ans[0].term_id != data.term_id) {
+                responses.push({
+                    error: 'the term is not accessible to the supervisor',
+                    flag: false
+                })
+                next(false, responses)
+            } else {
+                let termid = data.term_id;
+                delete data.term_id
+                data = fullFillData(data, data.user_id.length, [{
+                        key: 'term_id',
+                        default: termid
+                    },
+                    {
+                        key: 'rolls_id',
+                        default: 4
+                    }
+                ]);
+                console.log(data)
+                data = object2array(data);
+                let keys = data.keys;
+                data = data.array;
+                addMultipleRecords({
+                    table: 'profiles',
+                    values: data,
+                    keys
+                }, responses, (responses) => {
+                    let flag = getResponsesFlag(responses);
+                    next(flag, responses);
+                })
+            }
+        })
+    }
+}
+
+let addSupervisor = function (responses, data, next) {
+    req = {
+        table: 'profiles',
+        values: {
+            user_id: data.user_id,
+            term_id: data.term_id,
+            rolls_id: 2
+        }
+    }
+    addRecord(req, responses, (flag, responses) => {
+        let flagg = getResponsesFlag(responses);
+        console.log(flagg);
+        next(flagg, responses);
+    });
+}
+
+let addTeacher = function (responses, data, next) {
+    if (data.user_id.length != data.term_id.length && data.term_id.length != 1) {
+        responses.push({
+            error: 'users and terms are not paired',
+            flag: false
+        })
+        next(false, responses);
+    } else {
+        let profileId = data.profileId;
+        delete data.profileId;
+        sqlstatment = "select * from profiles where profiles_id = ?";
+        connection.query(sqlstatment, [profileId], (err, ans, fs) => {
+            if (ans[0].rolls_id == 2, ans[0].term_id != data.term_id) {
+                responses.push({
+                    error: 'the term is not accessible to the supervisor',
+                    flag: false
+                })
+                next(false, responses)
+            } else {
+                let termid = data.term_id;
+                delete data.term_id
+                data = fullFillData(data, data.user_id.length, [{
+                        key: 'term_id',
+                        default: termid
+                    },
+                    {
+                        key: 'rolls_id',
+                        default: 3
+                    }
+                ]);
+                console.log(data)
+                data = object2array(data);
+                let keys = data.keys;
+                data = data.array;
+                addMultipleRecords({
+                    table: 'profiles',
+                    values: data,
+                    keys
+                }, responses, (responses) => {
+                    let flag = getResponsesFlag(responses);
+                    next(flag, responses);
+                })
+            }
+        })
+    }
+}
+
 let addUser = function (id, data, next) {
     let options = {
         permissionCheck: {
@@ -625,7 +792,11 @@ let getRegistrationLink = function (email, next) {
 let getResponsesFlag = function (responses) {
     let flag = true;
     responses.forEach(element => {
-        flag = flag && element.status;
+        if (element.flag != undefined) {
+            flag = flag && element.flag
+        } else if (element.status != undefined) {
+            flag = flag && element.status;
+        }
     });
     return flag;
 }
@@ -706,7 +877,7 @@ let reverseTheBulkAddChain = function (responses, next) {
             if (results != undefined) {
                 if (results.hasOwnProperty('affectedRows')) {
                     for (let id = 0; id < results.affectedRows; id++) {
-                        removeRecord(element.table, id+results.insertId);
+                        removeRecord(element.table, id + results.insertId);
                     }
                 }
             }

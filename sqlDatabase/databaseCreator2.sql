@@ -479,6 +479,7 @@ CREATE TABLE IF NOT EXISTS `ecartable`.`rolls_has_procedures` (
   PRIMARY KEY (`id`, `rolls_id`, `procedures_id`),
   INDEX `fk_rolls_has_procedures_procedures1_idx` (`procedures_id` ASC),
   INDEX `fk_rolls_has_procedures_rolls1_idx` (`rolls_id` ASC),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   CONSTRAINT `fk_rolls_has_procedures_rolls1`
     FOREIGN KEY (`rolls_id`)
     REFERENCES `ecartable`.`rolls` (`rolls_id`)
@@ -636,7 +637,9 @@ START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (1, 'defineUser', 'define a new user in portal');
 INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (2, 'defineCourse', 'define a new course in portal');
-INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (3, 'defineProfile', 'define a new profile');
+INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (3, 'defineSupervisor', 'define new supervisor for the term');
+INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (4, 'defineTeacher', 'define new teacher for the term');
+INSERT INTO `ecartable`.`procedures` (`procedures_id`, `procedures_title`, `procedures_description`) VALUES (DEFAULT, 'defineStudents', 'define new students for term');
 
 COMMIT;
 
@@ -681,6 +684,11 @@ START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (1, 1, 1);
 INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (2, 1, 2);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (3, 1, 3);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (4, 1, 4);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (5, 2, 4);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (6, 1, 5);
+INSERT INTO `ecartable`.`rolls_has_procedures` (`id`, `rolls_id`, `procedures_id`) VALUES (7, 2, 5);
 
 COMMIT;
 
