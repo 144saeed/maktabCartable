@@ -36,7 +36,7 @@ module.exports = function (app, passport) {
                             result.verificationEmailSent = null;
                     });
 
-                    if (result.verificationEmailSent!=null)
+                    if (result.verificationEmailSent != null)
                         result.message = 'لینک فعال سازی برای شما ارسال شد';
                     else
                         result.message = 'مشکلی در ارسال پیش آمده لطفا دوباره تلاش کنید.';
@@ -94,7 +94,7 @@ module.exports = function (app, passport) {
             if (!req.query.verificationCode == values.link)
                 res.send("لینک غیر مجاز است");
         });
-        res.cookie("currentUserEmail",req.query.email);
+        res.cookie("currentUserEmail", req.query.email);
         res.sendFile(path.join(__dirname, '../views/register.html'), {
             message: req.flash('loginMessage'),
             function (err) {
@@ -185,11 +185,28 @@ module.exports = function (app, passport) {
     // User Information Interaction ========
     // =====================================
     app.post('/addUserCallInfo/:type', function (req, res) {
+
         database.addUserIformation(req.body.userId, {
             type: "callInformation",
             value: {
                 title: req.params.type,
                 number: req.body.data
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+    app.post('/addUserEduResume/', function (req, res) {
+
+        database.addUserIformation(req.body.userId, {
+            type: "educationalResume",
+            value: {
+                level: req.body.level, //Mandatory
+                institute: req.body.institute, //Mandatory
+                grade: req.body.grade, //Mandatory
+                startDate: req.body.startDate,
+                endDate: req.body.endDate
             }
         }, (responses, data) => {
             // res.send(responses)
