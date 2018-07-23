@@ -45,7 +45,7 @@ module.exports = function (app) {
         /*============================================
         // admin adds user
         ==============================================*/
-        /**1/
+        /**/
         database.doAnAction(1,"addUser",{
             nationalId:'0123456789',
             email:'saeed.oveisi@yahoo.com',
@@ -67,7 +67,7 @@ module.exports = function (app) {
         /*============================================
         // admin adds multiple users
         ==============================================*/
-        /**1/
+        /**/
         database.doAnAction(1, "addMultipleUsers", {
             nationalId: ['1', '2', '3', '4', '5', '6'],//mandatory
             email: ['e1@e.c', 'e2@e.c', 'e3@e.c', 'e4@e.c', 'e5@e.c', 'e6@e.c'], //mandatory,must have the same length asnationalId
@@ -186,8 +186,8 @@ module.exports = function (app) {
         ==============================================*/
         /**1/
         database.doAnAction(1, "addsupervisortoterm", {
-            user_id: 2,//mandatory
-            term_id: 2
+            user_id: 3,//mandatory
+            term_id: 3
         }, (flag, responses) => {
             // status.flag: false if there is error
             // status: udefined if everything is ok
@@ -208,8 +208,8 @@ module.exports = function (app) {
         // admin or supervisor adds teachers to specific term
         ==============================================*/
         /**1/
-        database.doAnAction(1, "addTeacherToTerm", {
-            user_id: [4,5],//mandatory
+        database.doAnAction(3, "addTeacherToTerm", {
+            user_id: [5],//mandatory
             term_id: [3]
         }, (flag, responses) => {
             // status.flag: false if there is error
@@ -233,7 +233,7 @@ module.exports = function (app) {
         /**1/
         database.doAnAction(1, "addStudentsToTerm", {
             user_id: [6,7,8],//mandatory
-            term_id: [3]
+            term_id: [2]
         }, (flag, responses) => {
             // status.flag: false if there is error
             // status: udefined if everything is ok
@@ -247,14 +247,29 @@ module.exports = function (app) {
         })
         /**/
 
-
-
         /**/
         /*============================================
         // requiering self information
         ==============================================*/
+        /**1/
+        database.getInformation(4, 'selfPersonalinformation', (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
         /**/
-        database.getInformation(5, 'selfPersonalinformation', [], (responses, data) => {
+
+        /**/
+        /*============================================
+        // add call information to user
+        ==============================================*/
+        /**1/
+        database.addUserIformation(4, {
+            type: "callInformation",
+            value: {
+                title: 'home',
+                number: '021212121'
+            }
+        }, (responses, data) => {
             // res.send(responses)
             res.send(data)
         })
