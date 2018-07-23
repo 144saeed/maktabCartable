@@ -1,5 +1,4 @@
 //creating mysql object
-//saeed
 let mysql = require('mysql');
 let hasher = require('bcrypt');
 //database connection setup
@@ -156,11 +155,47 @@ module.exports = {
                 }
             })
         } else if (data.type == "addressInformation") {
-            addAddressInformtion(id, data.value, next);
+            data = data.value;
+            let options = {
+                permissionCheck: {
+                    id: null,
+                    action: []
+                },
+                mandatoryKeysCheck: {
+                    keys: ['title', 'address'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    data.user_id = id;
+                    addAddressInformation(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
         } else if (data.type == "professionalResume") {
-            addCallInformtion(id, data.value, next);
-        } else if (data.type == "emailInformation") {
-            addEmailInformtion(id, data.value, next);
+            data = data.value;
+            let options = {
+                permissionCheck: {
+                    id: null,
+                    action: []
+                },
+                mandatoryKeysCheck: {
+                    keys: ['jobTitle', 'institute'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    data.user_id = id;
+                    addProfessionalResumeInformtion(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
         }
     },
 
@@ -422,6 +457,13 @@ module.exports = {
     }
 }
 
+let addAddressInformation = function (responses, data, next) {
+    addRecord({
+        table: "addressInfo",
+        values: data
+    }, responses, next)
+}
+
 let addCallInformtion = function (responses, data, next) {
     addRecord({
         table: "callInfo",
@@ -432,6 +474,13 @@ let addCallInformtion = function (responses, data, next) {
 let addEducationalResumeInformtion = function (responses, data, next) {
     addRecord({
         table: "eduResume",
+        values: data
+    }, responses, next)
+}
+
+let addProfessionalResumeInformtion = function (responses, data, next) {
+    addRecord({
+        table: "proResume",
         values: data
     }, responses, next)
 }

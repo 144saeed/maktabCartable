@@ -279,7 +279,7 @@ module.exports = function (app) {
         /*============================================
         // add educational Resume to user
         ==============================================*/
-        /**/
+        /**1/
         database.addUserIformation(4, {
             type: "educationalResume",
             value: {
@@ -288,6 +288,45 @@ module.exports = function (app) {
                 grade: 16.8,//Mandatory
                 startDate: "2018-10-10",
                 endDate: "2020-10-08"
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+        /**/
+
+        /**/
+        /*============================================
+        // add address Information to user
+        ==============================================*/
+        /**1/
+        database.addUserIformation(4, {
+            type: "addressInformation",
+            value: {
+                title: 'Home',//Mandatory
+                address: '21st Street میدان شهید',//Mandatory
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+        /**/
+
+        /**/
+        /*============================================
+        // add professional Resume to user
+        ==============================================*/
+        /**/
+        database.addUserIformation(4, {
+            type: "proResume",
+            value: {
+                jobTitle: 'مدیر شرکت',//Mandatory
+                institute: 'شرکت فلان',//Mandatory
+                instituteAddress: "میدون شهدا، میدون شکوفه، سر جوادی",
+                phoneNumber: "02121212121",
+                startDate: "2018-01-01",
+                endDate: "2018-01-01",
+                endingReason: "2018-01-02"
             }
         }, (responses, data) => {
             // res.send(responses)
