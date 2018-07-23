@@ -185,7 +185,6 @@ module.exports = function (app, passport) {
     // User Information Interaction ========
     // =====================================
     app.post('/addUserCallInfo/:type', function (req, res) {
-        console.log(req.params.type);
         database.addUserIformation(req.body.userId, {
             type: "callInformation",
             value: {
