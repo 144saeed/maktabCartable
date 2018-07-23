@@ -19,7 +19,7 @@ $(document).ready(function () {
             "</div>")
 
         for (let i = 0; i < data.profilesData.length; i++) {
-            if (data.profilesData[i].rolls_id == 1) {
+            if (data.profilesData[i].rolls_id == 4) {
                 $("#subRolls").append("<div class='select col s6 right' value='" + data.profilesData[i].rolls_id + "'>" +
                     "<div class='col s12'>" +
                     "<div class='rollIcon col s4 right student'></div>" +
@@ -27,7 +27,7 @@ $(document).ready(function () {
                     "<p>ورود به عنوان کاربر دانشجو</p>" +
                     "</div>" +
                     "</div>")
-            } else if (data.profilesData[i].rolls_id == 2) {
+            } else if (data.profilesData[i].rolls_id == 3) {
                 $("#subRolls").append("<div class='select col s6 right' value='" + data.profilesData[i].rolls_id + "'>" +
                     "<div class='col s12'>" +
                     "<div class='rollIcon col s4 right teacher'></div>" +
@@ -35,7 +35,7 @@ $(document).ready(function () {
                     "<p>ورود به عنوان کاربر استاد</p>" +
                     "</div>" +
                     "</div>")
-            } else if (data.profilesData[i].rolls_id == 3) {
+            } else if (data.profilesData[i].rolls_id == 2) {
                 $("#subRolls").append("<div class='select col s6 right' value='" + data.profilesData[i].rolls_id + "'>" +
                     "<div class='col s12'>" +
                     "<div class='rollIcon col s4 right supervisor'></div>" +
@@ -44,7 +44,7 @@ $(document).ready(function () {
                     "</div>" +
                     "</div>")
             }
-            else if (data.profilesData[i].rolls_id == 4) {
+            else if (data.profilesData[i].rolls_id == 1) {
                 $("#subRolls").append("<div class='select col s6 right' value='" + data.profilesData[i].rolls_id + "'>" +
                     "<div class='col s12'>" +
                     "<div class='rollIcon col s4 right admin'></div>" +
