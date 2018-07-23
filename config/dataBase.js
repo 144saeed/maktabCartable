@@ -111,6 +111,57 @@ module.exports = {
             alterEmailInformtion(id, dataToReplace.value, next);
         }
     },
+    addUserIformation(id, data, next) {
+        if (data.type == "callInformation") {
+            data = data.value;
+            let options = {
+                permissionCheck: {
+                    id: null,
+                    action: []
+                },
+                mandatoryKeysCheck: {
+                    keys: ['title', 'number'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    data.user_id = id;
+                    addCallInformtion(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
+        } else if (data.type == "educationalResume") {
+            data = data.value;
+            let options = {
+                permissionCheck: {
+                    id: null,
+                    action: []
+                },
+                mandatoryKeysCheck: {
+                    keys: ['level', 'institute', 'grade'],
+                }
+            };
+            responses = [];
+            validateOperation(options, data, status => {
+                if (status.flag) {
+                    responses.push(status);
+                    data.user_id = id;
+                    addEducationalResumeInformtion(responses, data, next);
+                } else {
+                    next(false, [status])
+                }
+            })
+        } else if (data.type == "addressInformation") {
+            addAddressInformtion(id, data.value, next);
+        } else if (data.type == "professionalResume") {
+            addCallInformtion(id, data.value, next);
+        } else if (data.type == "emailInformation") {
+            addEmailInformtion(id, data.value, next);
+        }
+    },
 
     doAnAction(profileId, action, data, next) {
         action = action.toLowerCase();
@@ -219,13 +270,13 @@ module.exports = {
             })
         }
     },
-    getInformation(profileId, type, filters, next) {
+    getInformation(profileId, type, next) {
         type = type.toLowerCase();
         if (type == 'selfpersonalinformation') {
             responses = [];
             let sqlstatment = "select id from user" +
                 " inner join profiles on profiles.user_id = user.id" +
-                " where profiles.profiles_id=?"
+                " where profiles.profiles_id=?";
             connection.query(sqlstatment, [profileId], (error, ans, fields) => {
                 responses.push({
                     error,
@@ -242,16 +293,16 @@ module.exports = {
                         " inner join ecartable.term on profiles.term_id=term.id" +
                         " inner join ecartable.user on profiles.user_id=user.id" +
                         " where user.id=?;" +
-                        " select * from user where user.id=?;"+
-                        " select * from callInfo"+
-                        " where callInfo.user_id=?;"+
-                        " select * from emailInfo"+
-                        " where emailInfo.user_id=?;"+
-                        " select * from addressInfo"+
-                        " where addressInfo.user_id=?;"+
-                        " select * from proResume"+
-                        " where proResume.user_id=?;"+
-                        " select * from eduResume"+
+                        " select * from user where user.id=?;" +
+                        " select * from callInfo" +
+                        " where callInfo.user_id=?;" +
+                        " select * from emailInfo" +
+                        " where emailInfo.user_id=?;" +
+                        " select * from addressInfo" +
+                        " where addressInfo.user_id=?;" +
+                        " select * from proResume" +
+                        " where proResume.user_id=?;" +
+                        " select * from eduResume" +
                         " where eduResume.user_id=?;";
                     connection.query(sqlstatment, [userId, userId, userId, userId, userId, userId, userId],
                         (error, ans, fields) => {
@@ -283,6 +334,11 @@ module.exports = {
                     }], null)
                 }
             });
+        } else if (type == "listofusers") {
+            responses = [];
+            let sqlstatment = "select termid from user" +
+                " inner join profiles on profiles.user_id = user.id" +
+                " where profiles.profiles_id=?";
         }
     },
     regenerateVerificationLink(email, next) {
@@ -363,6 +419,20 @@ module.exports = {
                 }
             })
     }
+}
+
+let addCallInformtion = function (responses, data, next) {
+    addRecord({
+        table: "callInfo",
+        values: data
+    }, responses, next)
+}
+
+let addEducationalResumeInformtion = function (responses, data, next) {
+    addRecord({
+        table: "eduResume",
+        values: data
+    }, responses, next)
 }
 
 let alterPersonalInformation = function (id, data, next) {

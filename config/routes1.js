@@ -46,13 +46,13 @@ module.exports = function (app) {
         // admin adds user
         ==============================================*/
         /**/
-        database.doAnAction(1,"addUser",{
-            nationalId:'0123456789',
-            email:'saeed.oveisi@yahoo.com',
-            firstName:'سعید',
-            lastName:'اویسی',
-            fathersName:'پدر'
-        },(status) => {
+        database.doAnAction(1, "addUser", {
+            nationalId: '0123456789',
+            email: 'saeed.oveisi@yahoo.com',
+            firstName: 'سعید',
+            lastName: 'اویسی',
+            fathersName: 'پدر'
+        }, (status) => {
             // status.flag: false if there is error
             // status: udefined if everything is ok
             // profile Id must be pointing to an admin user.other wise it produces an error
@@ -69,10 +69,10 @@ module.exports = function (app) {
         ==============================================*/
         /**/
         database.doAnAction(1, "addMultipleUsers", {
-            nationalId: ['1', '2', '3', '4', '5', '6'],//mandatory
+            nationalId: ['1', '2', '3', '4', '5', '6'], //mandatory
             email: ['e1@e.c', 'e2@e.c', 'e3@e.c', 'e4@e.c', 'e5@e.c', 'e6@e.c'], //mandatory,must have the same length asnationalId
             firstName: ['saeed'], // automatically will be converted to ['saeed',[],[],[],[],[],[]]
-            lastName: ['oveisi','1','1','1','1','1','1','1','1']//automatically drops exceeding ones
+            lastName: ['oveisi', '1', '1', '1', '1', '1', '1', '1', '1'] //automatically drops exceeding ones
             //other fileds will automatically be added
         }, (flag, responses) => {
             // status.flag: false if there is error
@@ -268,6 +268,26 @@ module.exports = function (app) {
             value: {
                 title: 'home',
                 number: '021212121'
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+        /**/
+
+        /**/
+        /*============================================
+        // add educational Resume to user
+        ==============================================*/
+        /**/
+        database.addUserIformation(4, {
+            type: "educationalResume",
+            value: {
+                level: 'Bsc.',//Mandatory
+                institute: 'Amirkabir university of technology',//Mandatory
+                grade: 16.8,//Mandatory
+                startDate: "2018-10-10",
+                endDate: "2020-10-08"
             }
         }, (responses, data) => {
             // res.send(responses)
