@@ -181,7 +181,22 @@ module.exports = function (app, passport) {
     app.get('/userProfile', isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../views/userProfile.html'));
     });
-
+    // =====================================
+    // User Information Interaction ========
+    // =====================================
+    app.post('/addUserCallInfo/:type', function (req, res) {
+        console.log(req.params.type);
+        database.addUserIformation(req.body.userId, {
+            type: "callInformation",
+            value: {
+                title: req.params.type,
+                number: req.body.data
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
     // =====================================
     // LOGOUT ==============================
     // =====================================
