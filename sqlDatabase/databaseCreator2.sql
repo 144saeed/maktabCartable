@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `ecartable`.`proResume` (
   `user_id` INT NOT NULL,
   `jobTitle` VARCHAR(45) NULL,
   `institute` VARCHAR(45) NULL,
-  `instituteAddress` VARCHAR(45) NULL,
+  `instituteAddress` LONGTEXT NULL,
   `phoneNumber` VARCHAR(45) NULL,
   `startDate` DATE NULL,
   `endDate` DATE NULL,
@@ -266,6 +266,8 @@ DROP TABLE IF EXISTS `ecartable`.`files` ;
 
 CREATE TABLE IF NOT EXISTS `ecartable`.`files` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `directory` LONGTEXT NULL,
+  `description` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -277,6 +279,7 @@ DROP TABLE IF EXISTS `ecartable`.`fileAccessTypes` ;
 
 CREATE TABLE IF NOT EXISTS `ecartable`.`fileAccessTypes` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -381,6 +384,7 @@ DROP TABLE IF EXISTS `ecartable`.`questions` ;
 
 CREATE TABLE IF NOT EXISTS `ecartable`.`questions` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `description` LONGTEXT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -673,6 +677,17 @@ COMMIT;
 START TRANSACTION;
 USE `ecartable`;
 INSERT INTO `ecartable`.`profiles` (`profiles_id`, `user_id`, `term_id`, `rolls_id`) VALUES (1, 1, 1, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `ecartable`.`fileAccessTypes`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `ecartable`;
+INSERT INTO `ecartable`.`fileAccessTypes` (`id`, `type`) VALUES (1, 'HomeWork');
+INSERT INTO `ecartable`.`fileAccessTypes` (`id`, `type`) VALUES (2, 'Tutorial');
 
 COMMIT;
 
