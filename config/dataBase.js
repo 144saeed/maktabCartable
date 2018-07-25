@@ -48,9 +48,6 @@ module.exports = {
             next(err, res, fields);
         });
     },
-    // getUserPersonalInfo(userId, next) {
-    //     let sqlstatment = 
-    // },
     checkForRegisterationEmail(email, next) {
         let sqlsttmnt = "select isMainEmail, isVerified" +
             " from emailinfo" +
@@ -154,7 +151,7 @@ module.exports = {
                     next(false, [status])
                 }
             })
-        } else if (data.type == "addressinformation") {
+        } else if (data.type == "addressInformation") {
             data = data.value;
             let options = {
                 permissionCheck: {
@@ -196,6 +193,11 @@ module.exports = {
                     next(false, [status])
                 }
             })
+        } else {
+            next([{
+                flag: false,
+                error: "not an available action"
+            }])
         }
     },
 
@@ -306,75 +308,31 @@ module.exports = {
             })
         }
     },
-    getInformation(profileId, type, next) {
+
+    doHomeWorkAction(profileId, action, data, next) {
+        action = action.toLowerCase();
+        responses = [];
+        if (action == "addquestion") {
+            addQuestion(data, responses, next)
+        } else if (action == "addfile") {
+            addFile(data, responses, next)
+        } else {
+            next([{
+                flag: false,
+                error: "not an available action"
+            }])
+        }
+    },
+
+    getInformation(id, type, next) {
         type = type.toLowerCase();
-        if (type == 'selfpersonalinformation') {
-            responses = [];
-            let sqlstatment = "select id from user" +
-                " inner join profiles on profiles.user_id = user.id" +
-                " where profiles.profiles_id=?";
-            connection.query(sqlstatment, [profileId], (error, ans, fields) => {
-                responses.push({
-                    error,
-                    fields
-                })
-                if (error) {
-                    next(responses, null)
-                } else if (ans) {
-                    let userId = ans[0].id;
-                    sqlstatment = "select ecartable.profiles.*," +
-                        " ecartable.term.*,ecartable.rolls.*" +
-                        " from profiles" +
-                        " inner join ecartable.rolls on rolls.rolls_id=profiles.rolls_id" +
-                        " inner join ecartable.term on profiles.term_id=term.id" +
-                        " inner join ecartable.user on profiles.user_id=user.id" +
-                        " where user.id=?;" +
-                        " select * from user where user.id=?;" +
-                        " select * from callInfo" +
-                        " where callInfo.user_id=?;" +
-                        " select * from emailInfo" +
-                        " where emailInfo.user_id=?;" +
-                        " select * from addressInfo" +
-                        " where addressInfo.user_id=?;" +
-                        " select * from proResume" +
-                        " where proResume.user_id=?;" +
-                        " select * from eduResume" +
-                        " where eduResume.user_id=?;";
-                    connection.query(sqlstatment, [userId, userId, userId, userId, userId, userId, userId],
-                        (error, ans, fields) => {
-                            responses.push({
-                                error,
-                                fields
-                            })
-                            if (error) {
-                                next(responses, null)
-                            } else if (ans == undefined) {
-                                next([{
-                                    error: 'no profiles found'
-                                }], null)
-                            } else {
-                                next(responses, {
-                                    profileInformation: ans[0],
-                                    personalInformation: ans[1],
-                                    callInformation: ans[2],
-                                    emailInformation: ans[3],
-                                    addressInformation: ans[4],
-                                    perofessionalResume: ans[5],
-                                    educationalResume: ans[6]
-                                })
-                            }
-                        })
-                } else {
-                    next([{
-                        error: "no users found"
-                    }], null)
-                }
-            });
-        } else if (type == "listofusers") {
-            responses = [];
-            let sqlstatment = "select termid from user" +
-                " inner join profiles on profiles.user_id = user.id" +
-                " where profiles.profiles_id=?";
+        responses = [];
+        if (type == 'listofusers') {
+            getListOfAllUsers(responses, next);
+        } else if (typ == 'terminformation') {
+            getTermData(id, responses, next);
+        } else if (type == "profileinformation") {
+            getProfileData(id, responses, next);
         }
     },
     regenerateVerificationLink(email, next) {
@@ -569,6 +527,44 @@ let addCourse = function (responses, values, next) {
     }, responses, next)
 }
 
+let addIfDoesntExist = function (table, record, responses, next) {
+    let sqlstatment = "select * from ?? where ?=?";
+    connection.query(sqlstatment, [table, record], (err, ans, f) => {
+        if (err || ans.length > 0) {
+
+        } else {
+            responses.push({
+                error: err,
+                results: ans,
+                fields: f,
+                table,
+                operation: "addIfDoesntExist"
+            })
+        }
+    })
+}
+
+let addQuestion = function (data, responses, next) {
+    let request = {
+        table: "questions",
+        values: {
+            description: data.value
+        }
+    }
+    addRecord(request, responses, next);
+}
+
+let addFile = function (data, responses, next) {
+    req = {
+        table: "files",
+        values: {
+            fileNam: data.fileNam,
+            description: data.description
+        }
+    }
+    addRecord(request, responses, next);
+}
+
 let addMultipleEmails = function (responses, data, next) {
     data = fullFillData(data, data.email.length, [{
             key: 'isMainEmail',
@@ -598,6 +594,60 @@ let addMultipleEmails = function (responses, data, next) {
             next(flag, responses);
         }
     })
+}
+
+let addMultipleFiles = function (responses, data, next) {
+    if (data.directory.length != data.type.length) {
+        responses.push({
+            error: 'number of files and their typs do not pair',
+            flag: false
+        })
+        next(getResponsesFlag(responses), responses);
+    } else {
+        let fileTableData = data.directory;
+        let typeTableData = data.type;
+        let fileProfileData = {};
+        fileTableData = fullFillData(fileTableData, data.directory.length, [{
+            key: 'description',
+            value: ''
+        }])
+        fileTableData = object2array(fileTableData);
+        let keys = fileTableData.keys;
+        fileTableData = fileTableData.array;
+        addMultipleRecords({
+            table: 'files',
+            values: fileTableData,
+            keys
+        }, responses, (responses) => {
+            if (responses[responses.length - 1].flag) {
+                typeTableData = object2array(typeTableData);
+                let keys = typeTableData.keys;
+                typeTableData = typeTableData.array;
+                addMultipleRecords({
+                    table: 'fileAccessTypes',
+                    valuse: typeTableData,
+                    keys
+                }, responses, (responses) => {
+                    if (responses[responses.length - 1].flag) {
+                        let startId = responses[responses.length - 2].results.insertId;
+                        let numOfIds = responses[responses.length - 2].results.affectedRows;
+                        fileProfileData.files_id = new Array(numOfIds).fill(0).map((x, i) => i + startId);
+                        let startId = responses[responses.length - 1].results.insertId;
+                        let numOfIds = responses[responses.length - 1].results.affectedRows;
+                        fileProfileData.fileAccessTypes_id = new Array(numOfIds).fill(0).map((x, i) => i + startId);
+                        fileProfileData = fullFillData(fileProfileData, data.directory.length, [{
+                            key: 'description',
+                            value: ''
+                        }])
+                    } else {
+                        reverseTheBulkAddChain(responses, next)
+                    }
+                })
+            } else {
+                reverseTheBulkAddChain(responses, next)
+            }
+        })
+    }
 }
 
 let addMultipleRecords = function (req, res, next) {
@@ -862,26 +912,6 @@ let addUser = function (id, data, next) {
     })
 }
 
-let alterRecord = function (req, res, next) {
-    let sqlstatment = "update ??" +
-        " set ?" +
-        " where" + request.conditions;
-    connection.query(sqlstatment, [req.table, req.values], (error, results) => {
-        res_ = {
-            error,
-            results,
-            table: req.table,
-            operation: "alterRecord",
-            flag: true
-        }
-        if (error) {
-            res_.flag = false;
-        }
-        res.push(res_);
-        next(res);
-    })
-}
-
 let checkForMandatoryKeys = function (keys, data, output, next) {
     let listOfMissing = [];
     let flag = true;
@@ -937,6 +967,21 @@ let generateSignUpLink = function (id, next) {
         })
 }
 
+let getProfileData = function (profileId, responses, next) {
+    let sqlstatment = "select profiles.*, rolls.*, term.*" +
+        " from profiles" +
+        " inner join rolls on rolls.rolls_id = profiles.rolls_id" +
+        " inner join term on term.id = profiles.term_id" +
+        " where profiles.profiles_id=?;";
+    connection.query(sqlstatment, [profileId], (error, ans, f) => {
+        responses.push({
+            error,
+            data: ans
+        })
+        next(responses);
+    })
+}
+
 let getRegistrationLink = function (email, next) {
     let sqlstatment = "select emailInfo.*, verificationLinks.*, verificationLinks.id as linkId" +
         " from emailInfo" +
@@ -985,6 +1030,33 @@ let getResponsesFlag = function (responses) {
         }
     });
     return flag;
+}
+
+let getTermData = function (id, responses, next) {
+    let sqlstatment = "select profiles.*, rolls.*, term.*" +
+        " from term" +
+        " inner join term on term.id = profiles.term_id" +
+        " inner join rolls on rolls.rolls_id = profiles.rolls_id" +
+        " where term.id=?;"
+    connection.query(sqlstatment, [id], (error, ans, f) => {
+        responses.push({
+            error,
+            data: ans
+        })
+        next(responses);
+    })
+}
+
+let getListOfAllUsers = function (responses, next) {
+    let sqlsttmnt = "select *" +
+        " from user;";
+    connection.query(sqlstatment, (error, ans, f) => {
+        responses.pus({
+            error,
+            data: ans
+        })
+        next(responses);
+    });
 }
 
 let fullFillData = function (data, dim, keys) {
