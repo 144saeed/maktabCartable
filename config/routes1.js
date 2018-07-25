@@ -67,7 +67,7 @@ module.exports = function (app) {
         /*============================================
         // admin adds multiple users
         ==============================================*/
-        /**/
+        /**1/
         database.doAnAction(1, "addMultipleUsers", {
             nationalId: ['1', '2', '3', '4', '5', '6'], //mandatory
             email: ['e1@e.c', 'e2@e.c', 'e3@e.c', 'e4@e.c', 'e5@e.c', 'e6@e.c'], //mandatory,must have the same length asnationalId
@@ -316,7 +316,7 @@ module.exports = function (app) {
         /*============================================
         // add professional Resume to user
         ==============================================*/
-        /**/
+        /**1/
         database.addUserIformation(4, {
             type: "proResume",
             value: {
@@ -327,6 +327,26 @@ module.exports = function (app) {
                 startDate: "2018-01-01",
                 endDate: "2018-01-01",
                 endingReason: "2018-01-02"
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+        /**/
+
+        /**/
+        /*============================================
+        // alter personal information for user
+        ==============================================*/
+        /**/
+        database.alterUserInformation(4, {
+            type: "personal",
+            value: {
+                firstName: 'علی اصفر',//Mandatory
+                lastName: 'تاجیک زاده قیلاق',//Mandatory
+                nationalId: "525252525252",
+                fathersName: "بیژن",
+                personalPic: ""
             }
         }, (responses, data) => {
             // res.send(responses)

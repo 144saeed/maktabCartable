@@ -154,7 +154,7 @@ module.exports = {
                     next(false, [status])
                 }
             })
-        } else if (data.type == "addressInformation") {
+        } else if (data.type == "addressinformation") {
             data = data.value;
             let options = {
                 permissionCheck: {
@@ -175,7 +175,7 @@ module.exports = {
                     next(false, [status])
                 }
             })
-        } else if (data.type == "professionalResume") {
+        } else if (data.type == "professionalresume") {
             data = data.value;
             let options = {
                 permissionCheck: {

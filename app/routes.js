@@ -118,7 +118,7 @@ module.exports = function (app, passport) {
 
     });
     // =====================================
-    // User Data Interaction ==============================
+    // User Data Interaction ===============
     // =====================================
     app.get('/userRolls', isLoggedIn, function (req, res) {
         database.userPersonalDataByUserId(req.user, (err, results, fields) => {
@@ -141,8 +141,8 @@ module.exports = function (app, passport) {
             //With this route u will directed to rolls page to choose a roll wich user has.
         })
     });
-    app.get('/UserFullInfo', isLoggedIn, function (req, res) {
-        database.userPersonalDataByUserId(req.user, (err, results, fields) => {
+    app.get('/UserFullInfo/', function (req, res) {
+        database.userPersonalDataByUserId(req.query.userid, (err, results, fields) => {
             res.send(results);
         })
     });
@@ -184,6 +184,9 @@ module.exports = function (app, passport) {
     // =====================================
     // User Information Interaction ========
     // =====================================
+    //====================
+    //Add
+    //====================
     app.post('/addUserCallInfo/:type', function (req, res) {
 
         database.addUserIformation(req.body.userId, {
@@ -197,7 +200,7 @@ module.exports = function (app, passport) {
             res.send(data)
         })
     });
-    app.post('/addUserEduResume/', function (req, res) {
+    app.post('/UserEduResume/', function (req, res) {
 
         database.addUserIformation(req.body.userId, {
             type: "educationalResume",
@@ -207,6 +210,114 @@ module.exports = function (app, passport) {
                 grade: req.body.grade, //Mandatory
                 startDate: req.body.startDate,
                 endDate: req.body.endDate
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+    app.post('/UserProResume/', function (req, res) {
+
+        database.addUserIformation(req.body.userId, {
+            type: "professionalresume",
+            value: {
+                jobTitle: req.body.jobTitle, //Mandatory
+                institute: req.body.institute, //Mandatory
+                instituteAddress: req.body.instituteAddress,
+                phoneNumber: req.body.phoneNumber,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                endingReason: req.body.endingReason
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+
+    app.post('/UserAddrInfo/', function (req, res) {
+
+        database.addUserIformation(req.body.userId, {
+            type: "addressinformation",
+            value: {
+                title: req.body.title, //Mandatory
+                address: req.body.address, //Mandatory
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+    //====================
+    //Alter
+    //====================
+    app.put('/AlterUserInfo/', function (req, res) {
+
+        database.alterUserInformation(req.body.userId, {
+            type: "personal",
+            value: {
+                firstName: req.body.firstName, //Mandatory
+                lastName: req.body.lastName, //Mandatory
+                nationalId: req.body.nationalId,
+                fathersName: req.body.fathersName,
+                personalPic: req.body.personalPic
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+    app.put('/UserProResume/', function (req, res) {
+
+        database.alterUserInformation(req.body.userId, {
+            type: "professionalresume",
+            value: {
+                jobTitle: req.body.jobTitle, //Mandatory
+                institute: req.body.institute, //Mandatory
+                instituteAddress: req.body.instituteAddress,
+                phoneNumber: req.body.phoneNumber,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate,
+                endingReason: req.body.endingReason
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+    app.put('/UserAddrInfo/', function (req, res) {
+
+        database.alterUserInformation(req.body.userId, {
+            type: "addressinformation",
+            value: {
+                title: req.body.title, //Mandatory
+                address: req.body.address, //Mandatory
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+    app.put('/UserEduResume/', function (req, res) {
+        database.alterUserInformation(req.body.userId, {
+            type: "educationalResume",
+            value: {
+                level: req.body.level,
+                institute: req.body.institute, 
+                grade: req.body.grade, 
+                startDate: req.body.startDate,
+                endDate: req.body.endDate
+            }
+        }, (responses, data) => {
+            // res.send(responses)
+            res.send(data)
+        })
+    });
+    app.put('/UserEmailInfo/', function (req, res) {
+        database.alterUserInformation(req.body.userId, {
+            type: "emailInformation",
+            value: {
+                email: req.body.email
             }
         }, (responses, data) => {
             // res.send(responses)
